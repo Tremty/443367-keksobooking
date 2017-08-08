@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Екатерина Кутузова](https://up.htmlacademy.ru/javascript/10/user/443367).
-* Наставник: `Неизвестно`.
+* Наставник:  [Екатерина Кащенко](https://htmlacademy.ru/profile/id109008).
 
 ---
 
