@@ -3,8 +3,6 @@
 var advertisementsNearby = [];
 
 var advertisementsData = {
-  avatar: ['img/avatars/user01.png', 'img/avatars/user02.png', 'img/avatars/user03.png', 'img/avatars/user04.png', 'img/avatars/user05.png', 'img/avatars/user06.png', 'img/avatars/user07.png', 'img/avatars/user08.png'],
-
   offer: {
     title: ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'],
     type: ['flat', 'house', 'bungalo'],
@@ -53,18 +51,18 @@ function getRandomFeatures() {
 }
 
 function createAdvertisementsNearby(count) {
-  var indexes = getRandomArrayOfIndexes(advertisementsData.avatar, count);
+  var indexes = getRandomArrayOfIndexes(advertisementsData.offer.title, count);
 
   for (var i = 0; i < count; i++) {
     advertisementsNearby[i] = {
       author: {
-        avatar: advertisementsData.avatar[indexes[i]] /* результат функции выбирающей один из 8 аватаров, с таким же индексом, что и offer.title*/
+        avatar: 'img/avatars/user0' + [indexes[i] + 1] + '.png'
       },
 
       offer: {
-        title: advertisementsData.offer.title[indexes[i]], /* результат функции выбирающей один из 8 названий, с таким же индексом, что и аватар*/
-        address: getRandomNumber(300, 900) + ' ,' + getRandomNumber(100, 500),
-        prise: getRandomNumber(1000, 1000000),
+        title: advertisementsData.offer.title[indexes[i]],
+        address: '',
+        price: getRandomNumber(1000, 1000000),
         type: getRandomVariable(advertisementsData.offer.type),
         rooms: getRandomNumber(1, 5),
         guests: getRandomNumber(1, 15),
@@ -80,20 +78,14 @@ function createAdvertisementsNearby(count) {
         y: getRandomNumber(100, 500)
       }
     };
+    advertisementsNearby[i].offer.address = advertisementsNearby[i].location.x + ', ' + advertisementsNearby[i].location.y;
   }
   return advertisementsNearby;
 }
 
-createAdvertisementsNearby(7);
+createAdvertisementsNearby(8);
 
-advertisementsNearby = createAdvertisementsNearby(7);
-// На основе данных, созданных в предыдущем пункте, создайте DOM-элементы, соответствующие меткам на карте случайно сгенерированных объявлений и заполните их данными из массива. Итоговая разметка метки должна выглядеть следующим образом:
-//
-//   <div class="pin" style="left: {{location.x}}px; top: {{location.y}}px">
-//   <img src="{{author.avatar}}" class="rounded" width="40" height="40">
-//   </div>
-//   Обратите внимание
-// Координаты X и Y это не координаты левого верхнего угла блока метки, а координаты, на которые указывает метка своим острым концом. Чтобы найти эту координату нужно учесть размеры элемента с меткой.
+advertisementsNearby = createAdvertisementsNearby(8);
 
 function createPinList(pinCount) {
   var pinList = document.querySelector('.tokyo__pin-map');
@@ -105,9 +97,53 @@ function createPinList(pinCount) {
     pinElement.className = 'pin';
     pinElement.style.left = advertisementsNearby[i].location.x + pinWidth / 2 + 'px';
     pinElement.style.top = advertisementsNearby[i].location.y + pinHeight + 'px';
+    var fullPinList = document.querySelector('.pin');
+    var pinAvatar = document.createElement('img');
+    pinAvatar.src = advertisementsNearby[i].author.avatar;
+    pinAvatar.className = 'rounded';
+    pinAvatar.width = '40';
+    pinAvatar.height = '40';
+    pinElement.appendChild(pinAvatar);
     fragment.appendChild(pinElement);
   }
   pinList.appendChild(fragment);
+  fullPinList.appendChild(fragment);
 }
 
-createPinList(7);
+createPinList(8);
+
+function createAdvertisement() {
+  var template = document.querySelector('#lodge-template');
+  var lodgeElement = template.content.cloneNode(true);
+  lodgeElement.querySelector('.lodge__title').textContent = advertisementsNearby[0].offer.title;
+  lodgeElement.querySelector('.lodge__address').textContent = advertisementsNearby[0].offer.address;
+  lodgeElement.querySelector('.lodge__price').textContent = advertisementsNearby[0].offer.price + ' ' + '&#x20bd;' + '/ночь';
+  lodgeElement.querySelector('.lodge__type').textContent = advertisementsNearby[0].offer.type;
+  lodgeElement.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + advertisementsNearby[0].offer.guests + ' гостей в ' + advertisementsNearby[0].offer.rooms + ' комнатах';
+  lodgeElement.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + advertisementsNearby[0].offer.checkin + ' , выезд до ' + advertisementsNearby[0].offer.checkout;
+  lodgeElement.querySelector('.lodge__description').textContent = advertisementsNearby[0].offer.description;
+  var features = advertisementsNearby[0].offer.features;
+  for (var i = 0; i < features.length; i++) {
+    lodgeElement.querySelector('.lodge__features').innerHTML += '<span class = "feature__image feature__image--' + features[i] + '"></span>';
+  }
+  return lodgeElement;
+}
+
+function showAdvertisement() {
+  var dialogPanel = document.querySelector('.dialog__panel');
+  dialogPanel.parentElement.replaceChild(createAdvertisement(), dialogPanel);
+
+  var dialogTitle = document.querySelector('.dialog__title');
+  // var oldDialogPanelAvatar = dialogTitle.getElementsByTagName('img');
+  // dialogTitle.removeChild(oldDialogPanelAvatar);
+  var fragment = document.createDocumentFragment();
+  var dialogPanelAvatar = document.createElement('img');
+  dialogPanelAvatar.src = advertisementsNearby[0].author.avatar;
+  dialogPanelAvatar.width = '70';
+  dialogPanelAvatar.height = '70';
+  dialogPanelAvatar.alt = 'Avatar';
+  fragment.appendChild(dialogPanelAvatar);
+  dialogTitle.appendChild(fragment);
+}
+
+showAdvertisement();
