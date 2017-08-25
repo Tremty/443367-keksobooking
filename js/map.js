@@ -6,6 +6,7 @@ var advertisementsData = {
   offer: {
     title: ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'],
     type: ['flat', 'house', 'bungalo'],
+    typeTranslate: ['квартира', 'дом', 'бунгало'],
     checkin: ['12:00', '13:00', '14:00'],
     checkout: ['12:00', '13:00', '14:00'],
     features: ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner']
@@ -24,7 +25,7 @@ function getRandomArrayOfIndexes(advertisementsDataArray, count) {
     for (var i = 0; i < count; i++) {
       if (randomArrayOfIndexes[i] === randomNumber) {
         foundedNumber = true;
-        break;
+        i = i;
       }
     }
     if (!foundedNumber) {
@@ -50,9 +51,20 @@ function getRandomFeatures() {
   return randomFeaturesArray;
 }
 
+function getAdvertisementsDataType(advertisementsOfferTitle) {
+  var advertisementType = advertisementsOfferTitle;
+  if (advertisementsOfferTitle === 'flat') {
+    advertisementType = advertisementsData.offer.typeTranslate[0];
+  } else if (advertisementsOfferTitle === 'house') {
+    advertisementType = advertisementsData.offer.typeTranslate[1];
+  } else if (advertisementsOfferTitle === 'bungalo') {
+    advertisementType = advertisementsData.offer.typeTranslate[2];
+  }
+  return advertisementType;
+}
+
 function createAdvertisementsNearby(count) {
   var indexes = getRandomArrayOfIndexes(advertisementsData.offer.title, count);
-
   for (var i = 0; i < count; i++) {
     advertisementsNearby[i] = {
       author: {
@@ -63,7 +75,7 @@ function createAdvertisementsNearby(count) {
         title: advertisementsData.offer.title[indexes[i]],
         address: '',
         price: getRandomNumber(1000, 1000000),
-        type: getRandomVariable(advertisementsData.offer.type),
+        type: getAdvertisementsDataType(getRandomVariable(advertisementsData.offer.type)),
         rooms: getRandomNumber(1, 5),
         guests: getRandomNumber(1, 15),
         checkin: getRandomVariable(advertisementsData.offer.checkin),
@@ -82,10 +94,6 @@ function createAdvertisementsNearby(count) {
   }
   return advertisementsNearby;
 }
-
-createAdvertisementsNearby(8);
-
-advertisementsNearby = createAdvertisementsNearby(8);
 
 function createPinList(pinCount) {
   var pinList = document.querySelector('.tokyo__pin-map');
@@ -110,14 +118,12 @@ function createPinList(pinCount) {
   fullPinList.appendChild(fragment);
 }
 
-createPinList(8);
-
 function createAdvertisement() {
   var template = document.querySelector('#lodge-template');
   var lodgeElement = template.content.cloneNode(true);
   lodgeElement.querySelector('.lodge__title').textContent = advertisementsNearby[0].offer.title;
   lodgeElement.querySelector('.lodge__address').textContent = advertisementsNearby[0].offer.address;
-  lodgeElement.querySelector('.lodge__price').textContent = advertisementsNearby[0].offer.price + ' ' + '&#x20bd;' + '/ночь';
+  lodgeElement.querySelector('.lodge__price').textContent = advertisementsNearby[0].offer.price + ' ' + String.fromCharCode(8381) + '/ночь';
   lodgeElement.querySelector('.lodge__type').textContent = advertisementsNearby[0].offer.type;
   lodgeElement.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + advertisementsNearby[0].offer.guests + ' гостей в ' + advertisementsNearby[0].offer.rooms + ' комнатах';
   lodgeElement.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + advertisementsNearby[0].offer.checkin + ' , выезд до ' + advertisementsNearby[0].offer.checkout;
@@ -134,16 +140,12 @@ function showAdvertisement() {
   dialogPanel.parentElement.replaceChild(createAdvertisement(), dialogPanel);
 
   var dialogTitle = document.querySelector('.dialog__title');
-  // var oldDialogPanelAvatar = dialogTitle.getElementsByTagName('img');
-  // dialogTitle.removeChild(oldDialogPanelAvatar);
-  var fragment = document.createDocumentFragment();
-  var dialogPanelAvatar = document.createElement('img');
+  var dialogPanelAvatar = dialogTitle.querySelector('img');
   dialogPanelAvatar.src = advertisementsNearby[0].author.avatar;
-  dialogPanelAvatar.width = '70';
-  dialogPanelAvatar.height = '70';
-  dialogPanelAvatar.alt = 'Avatar';
-  fragment.appendChild(dialogPanelAvatar);
-  dialogTitle.appendChild(fragment);
 }
+
+createAdvertisementsNearby(8);
+
+createPinList(8);
 
 showAdvertisement();
