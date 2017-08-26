@@ -25,7 +25,6 @@ function getRandomArrayOfIndexes(advertisementsDataArray, count) {
     for (var i = 0; i < count; i++) {
       if (randomArrayOfIndexes[i] === randomNumber) {
         foundedNumber = true;
-        i = i;
       }
     }
     if (!foundedNumber) {
