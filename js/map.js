@@ -159,23 +159,47 @@ var modalDialog = document.querySelector('.dialog');
 var dialogClose = modalDialog.querySelector('.dialog__close');
 var pinElementCollection = document.querySelectorAll('.pin');
 
-for (var i = 0; i < pinElementCollection.length; i++) {
-  pinElementCollection[i].addEventListener('click', clickHandler);
+function addClickHandlerForArr() {
+  for (var i = 0; i < pinElementCollection.length; i++) {
+    pinElementCollection[i].addEventListener('click', clickHandler);
+  }
 }
 
-function clickHandler(evt) {
+// Попытка навесить энтер на пины, чтобы они открывались по нажатию, если находяятся в фокусе
+// Попытка осуществлена по принципу, котрый использовался выше для навешивания события клика (addClickHandlerForArr)
+// Проблема с логикой функции связана с тем, что в addClickHandlerForArr нет открытия окна, оно у меня находится
+// в clickHandler. Но если убрать из addEnterHandlerForArr функцию открытия окна, то что будет внутри if?
+
+// function addEnterHandlerForArr(evt) {
+//   for (var i = 0; i < pinElementCollection.length; i++) {
+//     pinElementCollection[i].addEventListener('keydown', clickHandler);
+//     if (evt.keyCode === ENTER_KEYCODE) {
+//       showModal();
+//     }
+//   }
+// }
+//
+// addEnterHandlerForArr();
+
+addClickHandlerForArr();
+
+function removePinActiveFromArr() {
   for (var j = 0; j < pinElementCollection.length; j++) {
     pinElementCollection[j].classList.remove('pin--active');
   }
+}
+
+function clickHandler(evt) {
+  removePinActiveFromArr();
 
   evt.target.parentNode.classList.add('pin--active');
-  var infoForIndex = evt.target.src.toString();
-  var replacedIndex = infoForIndex.replace(/\D/g, '');
-  var index = (parseInt(replacedIndex, 10)) - 1;
-  //
-  // var pinActive = document.querySelector('.pin--active');
-  // console.log(pinElementCollection);
-  // var index = pinElementCollection.indexOf(pinActive);
+  // Мы успешно навесили пин эктив на один элемент и теперь нам надо пывести диалог, который сответсвует
+  // этому элементу. Для этого я хочу найти индекс элемента коллекции, к которому добавился пин-эктив
+  var pinActive = document.querySelector('.pin--active');
+  // я успешно нахожу пин эктив, он ложится в pinActive, это фиксирует дебаггер,
+  //   и вот я хочу узнать индекс этого дива с классами пин и пин-эктив... Но нет...
+  var index = pinElementCollection.indexOf(pinActive);
+  // консоль лог и дебаггер утверждают, что в индекс лежит undefined
   // console.log(index);
   showAdvertisement(advertisementsNearby[index]);
   showModal();
@@ -184,6 +208,7 @@ function clickHandler(evt) {
 function modalEscHandler(evt) {
   if (evt.keyCode === ESC_KEYCODE) {
     closeModal();
+    removePinActiveFromArr();
   }
 }
 
@@ -199,12 +224,12 @@ function closeModal() {
 
 dialogClose.addEventListener('click', function () {
   closeModal();
+  removePinActiveFromArr();
 });
 
 dialogClose.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     closeModal();
+    removePinActiveFromArr();
   }
 });
-
-
