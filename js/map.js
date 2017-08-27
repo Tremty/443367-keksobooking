@@ -97,8 +97,8 @@ function createAdvertisementsNearby(count) {
 function createPinList(pinCount) {
   var pinList = document.querySelector('.tokyo__pin-map');
   var fragment = document.createDocumentFragment();
-  var pinHeight = 94;
-  var pinWidth = 75;
+  var pinHeight = 75;
+  var pinWidth = 56;
   for (var i = 0; i < pinCount; i++) {
     var pinElement = document.createElement('div');
     pinElement.className = 'pin';
@@ -117,34 +117,48 @@ function createPinList(pinCount) {
   fullPinList.appendChild(fragment);
 }
 
-function createAdvertisement() {
+function createAdvertisement(selectedArray) {
   var template = document.querySelector('#lodge-template');
   var lodgeElement = template.content.cloneNode(true);
-  lodgeElement.querySelector('.lodge__title').textContent = advertisementsNearby[0].offer.title;
-  lodgeElement.querySelector('.lodge__address').textContent = advertisementsNearby[0].offer.address;
-  lodgeElement.querySelector('.lodge__price').textContent = advertisementsNearby[0].offer.price + ' ' + String.fromCharCode(8381) + '/ночь';
-  lodgeElement.querySelector('.lodge__type').textContent = advertisementsNearby[0].offer.type;
-  lodgeElement.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + advertisementsNearby[0].offer.guests + ' гостей в ' + advertisementsNearby[0].offer.rooms + ' комнатах';
-  lodgeElement.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + advertisementsNearby[0].offer.checkin + ' , выезд до ' + advertisementsNearby[0].offer.checkout;
-  lodgeElement.querySelector('.lodge__description').textContent = advertisementsNearby[0].offer.description;
-  var features = advertisementsNearby[0].offer.features;
+  lodgeElement.querySelector('.lodge__title').textContent = selectedArray.offer.title;
+  lodgeElement.querySelector('.lodge__address').textContent = selectedArray.offer.address;
+  lodgeElement.querySelector('.lodge__price').textContent = selectedArray.offer.price + ' ' + String.fromCharCode(8381) + '/ночь';
+  lodgeElement.querySelector('.lodge__type').textContent = selectedArray.offer.type;
+  lodgeElement.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + selectedArray.offer.guests + ' гостей в ' + selectedArray.offer.rooms + ' комнатах';
+  lodgeElement.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + selectedArray.offer.checkin + ' , выезд до ' + selectedArray.offer.checkout;
+  lodgeElement.querySelector('.lodge__description').textContent = selectedArray.offer.description;
+  var features = selectedArray.offer.features;
   for (var i = 0; i < features.length; i++) {
     lodgeElement.querySelector('.lodge__features').innerHTML += '<span class = "feature__image feature__image--' + features[i] + '"></span>';
   }
   return lodgeElement;
 }
 
-function showAdvertisement() {
+function showAdvertisement(selectedArray) {
   var dialogPanel = document.querySelector('.dialog__panel');
-  dialogPanel.parentElement.replaceChild(createAdvertisement(), dialogPanel);
+  dialogPanel.parentElement.replaceChild(createAdvertisement(selectedArray), dialogPanel);
 
   var dialogTitle = document.querySelector('.dialog__title');
   var dialogPanelAvatar = dialogTitle.querySelector('img');
-  dialogPanelAvatar.src = advertisementsNearby[0].author.avatar;
+  dialogPanelAvatar.src = selectedArray.author.avatar;
 }
 
 createAdvertisementsNearby(8);
 
 createPinList(8);
 
-showAdvertisement();
+showAdvertisement(advertisementsNearby[0]);
+
+function clickHandler(evt) {
+  evt.target.parentNode.classList.add('pin--active');
+  var infoForIndex = evt.target.src.toString();
+  var replacedIndex = infoForIndex.replace(/\D/g, '');
+  var index = (parseInt(replacedIndex, 10)) - 1;
+  createAdvertisement(advertisementsNearby[index]);
+  showAdvertisement(advertisementsNearby[index]);
+}
+
+var pinElementCollection = document.querySelectorAll('.pin');
+for (var i = 0; i < pinElementCollection.length; i++) {
+  pinElementCollection[i].addEventListener('click', clickHandler);
+}
