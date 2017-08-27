@@ -102,6 +102,7 @@ function createPinList(pinCount) {
   for (var i = 0; i < pinCount; i++) {
     var pinElement = document.createElement('div');
     pinElement.className = 'pin';
+    pinElement.tabIndex = 0;
     pinElement.style.left = advertisementsNearby[i].location.x + pinWidth / 2 + 'px';
     pinElement.style.top = advertisementsNearby[i].location.y + pinHeight + 'px';
     var fullPinList = document.querySelector('.pin');
@@ -149,16 +150,61 @@ createPinList(8);
 
 showAdvertisement(advertisementsNearby[0]);
 
+// Задание к лекции по событиям
+
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+
+var modalDialog = document.querySelector('.dialog');
+var dialogClose = modalDialog.querySelector('.dialog__close');
+var pinElementCollection = document.querySelectorAll('.pin');
+
+for (var i = 0; i < pinElementCollection.length; i++) {
+  pinElementCollection[i].addEventListener('click', clickHandler);
+}
+
 function clickHandler(evt) {
+  for (var j = 0; j < pinElementCollection.length; j++) {
+    pinElementCollection[j].classList.remove('pin--active');
+  }
+
   evt.target.parentNode.classList.add('pin--active');
   var infoForIndex = evt.target.src.toString();
   var replacedIndex = infoForIndex.replace(/\D/g, '');
   var index = (parseInt(replacedIndex, 10)) - 1;
-  createAdvertisement(advertisementsNearby[index]);
+  //
+  // var pinActive = document.querySelector('.pin--active');
+  // console.log(pinElementCollection);
+  // var index = pinElementCollection.indexOf(pinActive);
+  // console.log(index);
   showAdvertisement(advertisementsNearby[index]);
+  showModal();
 }
 
-var pinElementCollection = document.querySelectorAll('.pin');
-for (var i = 0; i < pinElementCollection.length; i++) {
-  pinElementCollection[i].addEventListener('click', clickHandler);
+function modalEscHandler(evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closeModal();
+  }
 }
+
+function showModal() {
+  modalDialog.classList.remove('hidden');
+  document.addEventListener('keydown', modalEscHandler);
+}
+
+function closeModal() {
+  modalDialog.classList.add('hidden');
+  document.removeEventListener('keydown', modalEscHandler);
+}
+
+dialogClose.addEventListener('click', function () {
+  closeModal();
+});
+
+dialogClose.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    closeModal();
+  }
+});
+
+
