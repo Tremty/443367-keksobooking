@@ -222,3 +222,103 @@ dialogClose.addEventListener('keydown', function (evt) {
     removePinActiveFromArr();
   }
 });
+
+// Задание к лекции по событиям. Валидация форм
+
+var notice = document.querySelector('.notice');
+var noticeTitle = notice.querySelector('#title');
+var noticeAddress = notice.querySelector('#address');
+var noticeTimeIn = notice.querySelector('#timein');
+var noticeTimeOut = notice.querySelector('#timeout');
+var noticeType = notice.querySelector('#type');
+var noticePrice = notice.querySelector('#price');
+var minPriceForBungalo = 0;
+var minPriceForFlat = 1000;
+var minPriceForHouse = 5000;
+var minPriceForPalace = 10000;
+var noticeRooms = notice.querySelector('#room_number');
+var noticeCapacity = notice.querySelector('#capacity');
+var noticeSubmitBtn = notice.querySelector('.form__submit');
+
+noticeTimeIn.addEventListener('change', changeTimeIn);
+noticeTimeOut.addEventListener('change', changeTimeOut);
+noticeType.addEventListener('change', changePriceFromType);
+noticeRooms.addEventListener('change', changeCapacityFromRooms);
+noticeSubmitBtn.addEventListener('click', submitAndGetValue);
+
+
+function changeTimeIn(event) {
+  noticeTimeOut.value = event.target.value;
+}
+
+function changeTimeOut(event) {
+  noticeTimeIn.value = event.target.value;
+}
+
+function changePriceFromType(event) {
+  if (event.target.value === 'bungalo') {
+    noticePrice.setAttribute('min', minPriceForBungalo);
+    noticePrice.value = minPriceForBungalo;
+  } else if (event.target.value === 'flat') {
+    noticePrice.setAttribute('min', minPriceForFlat);
+    noticePrice.value = minPriceForFlat;
+  } else if (event.target.value === 'house') {
+    noticePrice.setAttribute('min', minPriceForHouse);
+    noticePrice.value = minPriceForHouse;
+  } else if (event.target.value === 'palace') {
+    noticePrice.setAttribute('min', minPriceForPalace);
+    noticePrice.value = minPriceForPalace;
+  }
+}
+
+// я не знаю, как проверить, работает ли это, так как при нажатии происходит переход на другую страницу
+function submitAndGetValue() {
+  noticeTitle.reset();
+  noticeAddress.reset();
+  noticeTimeIn.reset();
+  noticeTimeOut.reset();
+  noticeType.reset();
+  noticePrice.reset();
+  noticeRooms.reset();
+  noticeCapacity.reset();
+}
+
+function changeCapacityFromRooms(event) {
+  if (event.target.value === '100') {
+    // 100
+    noticeCapacity.value = 0;
+    noticeCapacity.children[2].classList.add('hidden');
+    noticeCapacity.children[1].classList.add('hidden');
+    noticeCapacity.children[0].classList.add('hidden');
+    noticeCapacity.children[3].classList.remove('hidden');
+  } else if (event.target.value === '1') {
+    // 1
+    noticeCapacity.value = 1;
+    noticeCapacity.children[3].classList.add('hidden');
+    noticeCapacity.children[1].classList.add('hidden');
+    noticeCapacity.children[0].classList.add('hidden');
+    noticeCapacity.children[2].classList.remove('hidden');
+  } else if (event.target.value === '2') {
+    // 2
+    noticeCapacity.value = 1;
+    noticeCapacity.children[3].classList.add('hidden');
+    noticeCapacity.children[0].classList.add('hidden');
+    noticeCapacity.children[2].classList.remove('hidden');
+    noticeCapacity.children[1].classList.remove('hidden');
+  } else if (event.target.value === '3') {
+    // 3
+    noticeCapacity.value = 1;
+    noticeCapacity.children[3].classList.add('hidden');
+    noticeCapacity.children[2].classList.remove('hidden');
+    noticeCapacity.children[1].classList.remove('hidden');
+    noticeCapacity.children[0].classList.remove('hidden');
+  }
+}
+
+// Проблема есть с состоянием на момент открытия страницы.
+//   Так как функция работает только после получения event.
+//   Я бы просто внесла изменения в разметку, добавив где надо селектед,
+//   а где надо hidden. Но не знаю, можно ли так по условиям задачи
+
+// И еще я не поняла: подсветку полей при невалидном значении надо делать через js
+// или можно это сделать псевдоклассами из css?
