@@ -226,8 +226,6 @@ dialogClose.addEventListener('keydown', function (evt) {
 // Задание к лекции по событиям. Валидация форм
 
 var notice = document.querySelector('.notice');
-var noticeTitle = notice.querySelector('#title');
-var noticeAddress = notice.querySelector('#address');
 var noticeTimeIn = notice.querySelector('#timein');
 var noticeTimeOut = notice.querySelector('#timeout');
 var noticeType = notice.querySelector('#type');
@@ -238,13 +236,12 @@ var minPriceForHouse = 5000;
 var minPriceForPalace = 10000;
 var noticeRooms = notice.querySelector('#room_number');
 var noticeCapacity = notice.querySelector('#capacity');
-var noticeSubmitBtn = notice.querySelector('.form__submit');
+var inputs = notice.querySelectorAll('input');
 
 noticeTimeIn.addEventListener('change', changeTimeIn);
 noticeTimeOut.addEventListener('change', changeTimeOut);
 noticeType.addEventListener('change', changePriceFromType);
 noticeRooms.addEventListener('change', changeCapacityFromRooms);
-noticeSubmitBtn.addEventListener('click', submitAndGetValue);
 
 
 function changeTimeIn(event) {
@@ -253,6 +250,12 @@ function changeTimeIn(event) {
 
 function changeTimeOut(event) {
   noticeTimeIn.value = event.target.value;
+}
+
+for (var i = 0; i < inputs.length; i++) {
+  if (!inputs[i].validity.valid) {
+    inputs[i].style.border = '1px solid red';
+  }
 }
 
 function changePriceFromType(event) {
@@ -269,18 +272,6 @@ function changePriceFromType(event) {
     noticePrice.setAttribute('min', minPriceForPalace);
     noticePrice.value = minPriceForPalace;
   }
-}
-
-// я не знаю, как проверить, работает ли это, так как при нажатии происходит переход на другую страницу
-function submitAndGetValue() {
-  noticeTitle.reset();
-  noticeAddress.reset();
-  noticeTimeIn.reset();
-  noticeTimeOut.reset();
-  noticeType.reset();
-  noticePrice.reset();
-  noticeRooms.reset();
-  noticeCapacity.reset();
 }
 
 function changeCapacityFromRooms(event) {
@@ -315,10 +306,3 @@ function changeCapacityFromRooms(event) {
   }
 }
 
-// Проблема есть с состоянием на момент открытия страницы.
-//   Так как функция работает только после получения event.
-//   Я бы просто внесла изменения в разметку, добавив где надо селектед,
-//   а где надо hidden. Но не знаю, можно ли так по условиям задачи
-
-// И еще я не поняла: подсветку полей при невалидном значении надо делать через js
-// или можно это сделать псевдоклассами из css?
