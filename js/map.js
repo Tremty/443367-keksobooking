@@ -7,6 +7,7 @@
   var modalDialog = document.querySelector('.dialog');
   var dialogClose = modalDialog.querySelector('.dialog__close');
   var pinElementCollection = document.querySelectorAll('.pin');
+  var pinMain = document.getElementsByClassName('pin__main')[0];
 
   function addClickHandlerForArr() {
     for (var i = 0; i < pinElementCollection.length; i++) {
@@ -26,9 +27,15 @@
     if (event.button === 0 || event.keyCode === ENTER_KEYCODE) {
       var pinActive = event.currentTarget;
       pinActive.classList.add('pin--active');
-      var index = pinActive.dataset.number;
-      window.showAdvertisement(window.advertisementsNearby[index]);
-      showModal();
+      if (pinActive.classList[1] !== 'pin__main') {
+        var index = pinActive.dataset.number;
+        window.showAdvertisement(window.advertisementsNearby[index]);
+        // console.log(window.advertisementsNearby[index]);
+        showModal();
+      } else {
+        window.showAdvertisement(window.advertisementMain);
+        showModal();
+      }
     }
   }
 
@@ -70,5 +77,48 @@
       removePinActiveFromArr();
     }
   });
-})();
 
+  // Drag and drop
+
+  pinMain.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
+      pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+      window.advertisementMain.offer.address = pinMain.style.top + ' : ' + pinMain.style.left;
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
+
+  // document.addEventListener('click', whereAmI);
+  // function whereAmI(evt) {
+  //   console.log(evt.clientX + ' : ' + evt.clientY);
+  // }
+})();
