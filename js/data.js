@@ -104,7 +104,7 @@
       y: 600
     },
     offer: {
-      address: '',
+      address: '102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3',
       checkin: '14:00',
       checkout: '10:00',
       description: 'Великолепная квартира-студия в центре Токио. Подходит как туристам, так и бизнесменам. Квартира полностью укомплектована и имеет свежий ремонт.',
@@ -118,7 +118,7 @@
     }
   };
 
-  window.advertisementMain.offer.address = window.advertisementMain.location.x + ':' + window.advertisementMain.location.y;
+  // window.advertisementMain.offer.address = window.advertisementMain.location.x + ':' + window.advertisementMain.location.y;
 
   window.advertisementsNearby = createAdvertisementsNearby(8);
 })();

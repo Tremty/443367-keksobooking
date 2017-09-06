@@ -2,7 +2,7 @@
 
 (function () {
 
-  function createAdvertisement(selectedArray) {
+  window.createAdvertisement = function (selectedArray) {
     var template = document.querySelector('#lodge-template');
     var lodgeElement = template.content.cloneNode(true);
     lodgeElement.querySelector('.lodge__title').textContent = selectedArray.offer.title;
@@ -17,11 +17,11 @@
       lodgeElement.querySelector('.lodge__features').innerHTML += '<span class = "feature__image feature__image--' + features[i] + '"></span>';
     }
     return lodgeElement;
-  }
+  };
 
   window.showAdvertisement = function (selectedArray) {
     var dialogPanel = document.querySelector('.dialog__panel');
-    dialogPanel.parentElement.replaceChild(createAdvertisement(selectedArray), dialogPanel);
+    dialogPanel.parentElement.replaceChild(window.createAdvertisement(selectedArray), dialogPanel);
 
     var dialogTitle = document.querySelector('.dialog__title');
     var dialogPanelAvatar = dialogTitle.querySelector('img');
