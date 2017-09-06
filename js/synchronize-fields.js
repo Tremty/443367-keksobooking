@@ -37,47 +37,23 @@
     dependentField.setAttribute('min', dependentFieldValues[index]);
   }
 
-  function sync(evt, logicFunc, selectedFieldValues, dependentFieldValues, dependentField) {
+  function synchronizeFields(evt, logicFunc, selectedFieldValues, dependentFieldValues, dependentField) {
     logicFunc(evt, selectedFieldValues, dependentFieldValues, dependentField);
   }
 
   function synchronizeFieldsTimeIn(evt) {
-    sync(evt, searchValueForTimeEvt, noticeTimeInValues, noticeTimeOutValues, noticeTimeOut);
+    synchronizeFields(evt, searchValueForTimeEvt, noticeTimeInValues, noticeTimeOutValues, noticeTimeOut);
   }
 
   function synchronizeFieldsTimeOut(evt) {
-    sync(evt, searchValueForTimeEvt, noticeTimeOutValues, noticeTimeInValues, noticeTimeIn);
+    synchronizeFields(evt, searchValueForTimeEvt, noticeTimeOutValues, noticeTimeInValues, noticeTimeIn);
   }
 
   function synchronizeFieldsSetMinPrice(evt) {
-    sync(evt, setValueForMinPriceEvt, types, minPrices, noticePrice);
+    synchronizeFields(evt, setValueForMinPriceEvt, types, minPrices, noticePrice);
   }
 
   function synchronizeFieldsMinPrice(evt) {
-    sync(evt, searchValueForMinPriceEvt, types, minPrices, noticePrice);
+    synchronizeFields(evt, searchValueForMinPriceEvt, types, minPrices, noticePrice);
   }
-
-
-  // function searchValueWithoutEvt(targetElementValue, selectedFieldValues, dependentFieldValues, dependentField) {
-  //   var index = selectedFieldValues.indexOf(targetElementValue);
-  //   dependentField.value = dependentFieldValues[index];
-  // }
-  //
-  // function searchValueForTimeEvt(evt, selectedFieldValues, dependentFieldValues, dependentField, useFunction) {
-  //   var targetElementValue = evt.target.value;
-  //   useFunction(targetElementValue, selectedFieldValues, dependentFieldValues, dependentField);
-  // }
-  // function synchronizeFieldsTimeIn(evt) {
-  //   searchValueForTimeEvt(evt, noticeTimeInValues, noticeTimeOutValues, noticeTimeOut, searchValueWithoutEvt);
-  // }
-  //
-  // function synchronizeFieldsTimeOut(evt) {
-  //   searchValueForTimeEvt(evt, noticeTimeOutValues, noticeTimeInValues, noticeTimeIn, searchValueWithoutEvt);
-  // }
-  // function synchronizeFieldsSetMinPrice(evt) {
-  //   setValueForMinPriceEvt(evt, types, minPrices, noticePrice);
-  // }
-  // function synchronizeFieldsMinPrice(evt) {
-  //   searchValueForMinPriceEvt(evt, types, minPrices, noticePrice);
-  // }
 })();
