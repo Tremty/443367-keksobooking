@@ -2,9 +2,16 @@
 
 (function () {
   var notice = document.querySelector('.notice');
+  // var noticeTimeIn = notice.querySelector('#timein');
+  // var noticeTimeOut = notice.querySelector('#timeout');
+  // var noticeType = notice.querySelector('#type');
+  // var noticePrice = notice.querySelector('#price');
   var noticeRooms = notice.querySelector('#room_number');
   var noticeCapacity = notice.querySelector('#capacity');
+  // var noticeTitle = notice.querySelector('#title');
+  // var noticeAddress = notice.querySelector('#address');
   var inputs = notice.querySelectorAll('input');
+
 
   noticeRooms.addEventListener('change', changeCapacityFromRooms);
 
@@ -45,4 +52,6 @@
       noticeCapacity.children[0].classList.remove('hidden');
     }
   }
+
+
 })();

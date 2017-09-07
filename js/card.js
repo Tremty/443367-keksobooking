@@ -27,6 +27,4 @@
     var dialogPanelAvatar = dialogTitle.querySelector('img');
     dialogPanelAvatar.src = selectedArray.author.avatar;
   };
-
-  window.showAdvertisement(window.advertisementsNearby[0]);
 })();
