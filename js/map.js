@@ -20,7 +20,6 @@
       if (pinActive.classList[1] !== 'pin__main') {
         var index = pinActive.dataset.number;
         window.showAdvertisement(window.newAdvertisimentsArr[index]);
-        // console.log(window.newAdvertisimentsArr[index]);
         showModal();
       } else {
         window.showAdvertisement(window.advertisementMain);
@@ -48,11 +47,9 @@
 
   function removePinActiveFromArr() {
     var pinActivePrev = document.querySelector('.pin--active');
-    // console.log(pinActivePrev);
     if (pinActivePrev) {
       pinActivePrev.classList.remove('pin--active');
     }
-    // console.log(pinActivePrev);
   }
 
   dialogClose.addEventListener('click', function () {
@@ -66,8 +63,6 @@
       removePinActiveFromArr();
     }
   });
-
-  // Drag and drop
 
   pinMain.addEventListener('mousedown', function (evt) {
 

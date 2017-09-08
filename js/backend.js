@@ -72,11 +72,7 @@
 
   form.addEventListener('submit', function (evt) {
     window.backend.save(new FormData(form), function () {
-      var inputs = document.querySelectorAll('input');
-      for (var j = 0; j < inputs.length; j++) {
-        inputs[j].value = '';
-      }
-    // сбросить выбранное
+      window.reset();
     }, errorHandler);
     evt.preventDefault();
   });

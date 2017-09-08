@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-
   window.createAdvertisement = function (selectedArray) {
     var template = document.querySelector('#lodge-template');
     var lodgeElement = template.content.cloneNode(true);

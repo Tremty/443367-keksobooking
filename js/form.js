@@ -2,16 +2,15 @@
 
 (function () {
   var notice = document.querySelector('.notice');
-  // var noticeTimeIn = notice.querySelector('#timein');
-  // var noticeTimeOut = notice.querySelector('#timeout');
-  // var noticeType = notice.querySelector('#type');
-  // var noticePrice = notice.querySelector('#price');
+  var noticeTimeIn = notice.querySelector('#timein');
+  var noticeTimeOut = notice.querySelector('#timeout');
+  var noticeType = notice.querySelector('#type');
+  var noticePrice = notice.querySelector('#price');
   var noticeRooms = notice.querySelector('#room_number');
   var noticeCapacity = notice.querySelector('#capacity');
-  // var noticeTitle = notice.querySelector('#title');
-  // var noticeAddress = notice.querySelector('#address');
   var inputs = notice.querySelectorAll('input');
-
+  var textarea = notice.querySelector('textarea');
+  var priceValue = 1000;
 
   noticeRooms.addEventListener('change', changeCapacityFromRooms);
 
@@ -53,5 +52,17 @@
     }
   }
 
+  window.reset = function () {
+    for (var j = 0; j < inputs.length; j++) {
+      inputs[j].value = '';
+    }
+    textarea.value = '';
 
+    noticeTimeIn.value = noticeTimeIn.options[0].value;
+    noticeTimeOut.value = noticeTimeOut.options[0].value;
+    noticeRooms.value = noticeRooms.options[2].value;
+    noticeCapacity.value = noticeCapacity.options[2].value;
+    noticeType.value = noticeType.options[0].value;
+    noticePrice.value = priceValue;
+  };
 })();
