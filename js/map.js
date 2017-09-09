@@ -6,41 +6,27 @@
 
   var modalDialog = document.querySelector('.dialog');
   var dialogClose = modalDialog.querySelector('.dialog__close');
-  var pinElementCollection = document.querySelectorAll('.pin');
   var pinMain = document.getElementsByClassName('pin__main')[0];
   var formFieldAddress = document.querySelector('#address');
   var pinMainWidth = 74 / 2;
   var pinMainHeight = 94;
 
-  function addClickHandlerForArr() {
-    for (var i = 0; i < pinElementCollection.length; i++) {
-      pinElementCollection[i].addEventListener('click', openHandler);
-    }
-  }
+  window.openHandler = function (evt) {
 
-  function addEnterHandlerForArr() {
-    for (var i = 0; i < pinElementCollection.length; i++) {
-      pinElementCollection[i].addEventListener('keydown', openHandler);
-    }
-  }
-
-  function openHandler(event) {
     removePinActiveFromArr();
-
-    if (event.button === 0 || event.keyCode === ENTER_KEYCODE) {
-      var pinActive = event.currentTarget;
+    if (evt.button === 0 || evt.keyCode === ENTER_KEYCODE) {
+      var pinActive = evt.currentTarget;
       pinActive.classList.add('pin--active');
       if (pinActive.classList[1] !== 'pin__main') {
         var index = pinActive.dataset.number;
-        window.showAdvertisement(window.advertisementsNearby[index]);
-        // console.log(window.advertisementsNearby[index]);
+        window.showAdvertisement(window.newAdvertisimentsArr[index]);
         showModal();
       } else {
         window.showAdvertisement(window.advertisementMain);
         showModal();
       }
     }
-  }
+  };
 
   function modalEscHandler(evt) {
     if (evt.keyCode === ESC_KEYCODE) {
@@ -60,14 +46,11 @@
   }
 
   function removePinActiveFromArr() {
-    for (var j = 0; j < pinElementCollection.length; j++) {
-      pinElementCollection[j].classList.remove('pin--active');
+    var pinActivePrev = document.querySelector('.pin--active');
+    if (pinActivePrev) {
+      pinActivePrev.classList.remove('pin--active');
     }
   }
-
-  addEnterHandlerForArr();
-
-  addClickHandlerForArr();
 
   dialogClose.addEventListener('click', function () {
     closeModal();
@@ -81,10 +64,7 @@
     }
   });
 
-  // Drag and drop
-
   pinMain.addEventListener('mousedown', function (evt) {
-    // evt.preventDefault();
 
     var startCoords = {
       x: evt.clientX,

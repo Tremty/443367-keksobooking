@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-
   window.createAdvertisement = function (selectedArray) {
     var template = document.querySelector('#lodge-template');
     var lodgeElement = template.content.cloneNode(true);
@@ -27,6 +26,4 @@
     var dialogPanelAvatar = dialogTitle.querySelector('img');
     dialogPanelAvatar.src = selectedArray.author.avatar;
   };
-
-  window.showAdvertisement(window.advertisementsNearby[0]);
 })();
