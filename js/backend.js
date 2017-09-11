@@ -49,7 +49,6 @@
 
   function errorHandler(errorMessage) {
     var errorMessageModal = document.createElement('div');
-
     errorMessageModal.style.position = 'absolute';
     errorMessageModal.style.left = 0;
     errorMessageModal.style.top = 0;
@@ -64,8 +63,8 @@
 
   function successHandler(loadedAdvertisements) {
     window.newAdvertisementsArr = loadedAdvertisements;
-    // window.createPinList(loadedAdvertisements);
-    // window.showAdvertisement(loadedAdvertisements[0]);
+    window.createPinList(loadedAdvertisements);
+    window.showAdvertisement(loadedAdvertisements[0]);
   }
 
   window.backend.load(successHandler, errorHandler);

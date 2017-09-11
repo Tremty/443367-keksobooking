@@ -36,23 +36,20 @@
   var guests = filtersForm.querySelector('#housing_guests-number');
 
   filtersForm.addEventListener('change', chooseFilter);
-  // filtersForm.addEventListener('click', chooseFeaturesFilter);
+
 
   function chooseFilter(dataArr) {
     removePins();
     dataArr = window.newAdvertisementsArr;
     var askedTypeAdvertisements = typeFilter(dataArr);
-    // console.log(askedTypeAdvertisements);
     var askedPriceAdvertisements = priceFilter(askedTypeAdvertisements);
-    // console.log(askedPriceAdvertisements);
     var askedRoomsAdvertisements = roomsFilter(askedPriceAdvertisements);
-    // console.log(askedRoomsAdvertisements);
     var askedGuestsAdvertisements = guestsFilter(askedRoomsAdvertisements);
-    // console.log(askedGuestsAdvertisements);
+    var askedFeaturesAdvertisements = filterFeatures(findCheckedFeaturesOnFilterForm(), askedGuestsAdvertisements);
 
-    window.createPinList(askedGuestsAdvertisements);
-    window.showAdvertisement(askedGuestsAdvertisements[0]);
-    window.askedAdvertisements = askedGuestsAdvertisements;
+    window.createPinList(askedFeaturesAdvertisements);
+    window.showAdvertisement(askedFeaturesAdvertisements[0]);
+    window.askedAdvertisements = askedFeaturesAdvertisements;
   }
 
   function typeFilter(dataArr) {
@@ -62,17 +59,14 @@
       askedTypeAdvertisements = dataArr.filter(function (it) {
         return it.offer.type === type.options[1].value;
       });
-      // console.log(askedTypeAdvertisements);
     } else if (type.options[2].selected === true) {
       askedTypeAdvertisements = dataArr.filter(function (it) {
         return it.offer.type === type.options[2].value;
       });
-      // console.log(askedTypeAdvertisements);
     } else if (type.options[3].selected === true) {
       askedTypeAdvertisements = dataArr.filter(function (it) {
         return it.offer.type === type.options[3].value;
       });
-      // console.log(askedTypeAdvertisements);
     } else {
       askedTypeAdvertisements = dataArr;
     }
@@ -82,23 +76,17 @@
   function priceFilter(dataArr) {
     var askedPriceAdvertisements;
     if (price.options[1].selected === true) {
-      // console.log(price.option.value);
       askedPriceAdvertisements = dataArr.filter(function (it) {
         return it.offer.price >= 10000 && it.offer.price <= 50000;
       });
-      // console.log(askedPriceAdvertisements);
     } else if (price.options[2].selected === true) {
-      // console.log(price.option.value);
       askedPriceAdvertisements = dataArr.filter(function (it) {
         return it.offer.price < 10000;
       });
-      // console.log(askedPriceAdvertisements);
     } else if (price.options[3].selected === true) {
-      // console.log(price.option.value);
       askedPriceAdvertisements = dataArr.filter(function (it) {
         return it.offer.price > 50000;
       });
-      // console.log(askedPriceAdvertisements);
     } else {
       askedPriceAdvertisements = dataArr;
     }
@@ -109,24 +97,18 @@
     var askedRoomsAdvertisements;
 
     if (rooms.options[1].selected === true) {
-      // console.log(typeof(askedRooms));
       askedRoomsAdvertisements = dataArr.filter(function (it) {
-        // console.log(typeof(askedRooms));
-        // console.log(typeof(it.offer.rooms));
         return it.offer.rooms === (+rooms.options[1].value);
 
       });
-      // console.log(askedRoomsAdvertisements);
     } else if (rooms.options[2].selected === true) {
       askedRoomsAdvertisements = dataArr.filter(function (it) {
         return it.offer.rooms === (+rooms.options[2].value);
       });
-      // console.log(askedRoomsAdvertisements);
     } else if (rooms.options[3].selected === true) {
       askedRoomsAdvertisements = dataArr.filter(function (it) {
         return it.offer.rooms === (+rooms.options[3].value);
       });
-      // console.log(askedRoomsAdvertisements);
     } else {
       askedRoomsAdvertisements = dataArr;
     }
@@ -137,18 +119,13 @@
     var askedGuestsAdvertisements;
 
     if (guests.options[1].selected === true) {
-      // console.log(typeof(askedGuests));
       askedGuestsAdvertisements = dataArr.filter(function (it) {
-        // console.log(typeof(askedGuests));
-        // console.log(typeof(it.offer.guests));
         return it.offer.guests === (+guests.options[1].value);
       });
-      // console.log(askedGuestsAdvertisements);
     } else if (guests.options[2].selected === true) {
       askedGuestsAdvertisements = dataArr.filter(function (it) {
         return it.offer.guests === (+guests.options[2].value);
       });
-      // console.log(askedGuestsAdvertisements);
     } else {
       askedGuestsAdvertisements = dataArr;
     }
@@ -163,5 +140,38 @@
     }
   }
 
-})();
 
+  function findCheckedFeaturesOnFilterForm() {
+    var featuresCheckboxes = filtersForm.querySelectorAll('input');
+
+    var checkedFeaturesOnFilterForm = [];
+    for (var i = 0; i < featuresCheckboxes.length; i++) {
+      if (featuresCheckboxes[i].checked === true) {
+        checkedFeaturesOnFilterForm.push(featuresCheckboxes[i].value);
+      }
+    }
+    return checkedFeaturesOnFilterForm;
+  }
+
+  function filterFeatures(askedFeatures, advertisementsArray) {
+    var askedFeaturesAdvertisements = [];
+    for (var j = 0; j < advertisementsArray.length; j++) {
+      var featuresInAdvertisement = advertisementsArray[j].offer.features;
+      for (var i = 0; i < askedFeatures.length; i++) {
+        if (featuresInAdvertisement.indexOf(askedFeatures[i]) === -1) {
+          continue;
+        }
+      }
+    }
+    askedFeaturesAdvertisements.push(advertisementsArray[j]);
+    return askedFeaturesAdvertisements;
+  }
+
+  // эта функция запускается при событии change (наверху). Она должна принимать в качестве первого аргумента
+  // результат работы функции findCheckedFeaturesOnFilterForm() - отмеченные фичи, а в качестве второго аргумента
+  // отфильтрованный другими фильтрами массив из объявлений.
+  // сначала создается пустой массив, куда будут складываться подходящие объявления
+  // потом первый цикл берет каждое объявление из переданных вторым аргументом и складывает его фичи в массив featuresInAdvertisement
+  // потом второй цикл ищет среди этих фич (находящихся в объявлении) те фичи, которые были отмечены на инпутах.
+  // Как только одну не находит - выходит из второго цикла и начинает проверять фичи другого объявления.
+})();

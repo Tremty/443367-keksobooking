@@ -10,6 +10,8 @@
   var noticeCapacity = notice.querySelector('#capacity');
   var inputs = notice.querySelectorAll('input');
   var textarea = notice.querySelector('textarea');
+  var featuresBlock = notice.querySelector('#features');
+  var formFeatures = featuresBlock.querySelectorAll('input');
   var priceValue = 1000;
 
   noticeRooms.addEventListener('change', changeCapacityFromRooms);
@@ -57,12 +59,15 @@
       inputs[j].value = '';
     }
     textarea.value = '';
-
     noticeTimeIn.value = noticeTimeIn.options[0].value;
     noticeTimeOut.value = noticeTimeOut.options[0].value;
     noticeRooms.value = noticeRooms.options[2].value;
     noticeCapacity.value = noticeCapacity.options[2].value;
     noticeType.value = noticeType.options[0].value;
     noticePrice.value = priceValue;
+
+    for (j = 0; j < formFeatures.length; j++) {
+      formFeatures[j].checked = false;
+    }
   };
 })();

@@ -2,8 +2,8 @@
 
 (function () {
   var DEBOUNCE_INTERVAL = 30000;
-
   var lastTimeout;
+
   window.debounce = function (updateAdvertisements) {
     if (lastTimeout) {
       window.clearTimeout(lastTimeout);
