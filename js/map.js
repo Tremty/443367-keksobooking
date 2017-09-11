@@ -19,7 +19,7 @@
       pinActive.classList.add('pin--active');
       if (pinActive.classList[1] !== 'pin__main') {
         var index = pinActive.dataset.number;
-        window.showAdvertisement(window.newAdvertisimentsArr[index]);
+        window.showAdvertisement(window.askedAdvertisements[index]);
         showModal();
       } else {
         window.showAdvertisement(window.advertisementMain);

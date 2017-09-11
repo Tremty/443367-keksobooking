@@ -63,9 +63,9 @@
   }
 
   function successHandler(loadedAdvertisements) {
-    window.newAdvertisimentsArr = loadedAdvertisements;
-    window.createPinList(loadedAdvertisements);
-    window.showAdvertisement(loadedAdvertisements[0]);
+    window.newAdvertisementsArr = loadedAdvertisements;
+    // window.createPinList(loadedAdvertisements);
+    // window.showAdvertisement(loadedAdvertisements[0]);
   }
 
   window.backend.load(successHandler, errorHandler);
