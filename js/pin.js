@@ -153,25 +153,18 @@
     return checkedFeaturesOnFilterForm;
   }
 
+
   function filterFeatures(askedFeatures, advertisementsArray) {
     var askedFeaturesAdvertisements = [];
     for (var j = 0; j < advertisementsArray.length; j++) {
       var featuresInAdvertisement = advertisementsArray[j].offer.features;
-      for (var i = 0; i < askedFeatures.length; i++) {
-        if (featuresInAdvertisement.indexOf(askedFeatures[i]) === -1) {
-          continue;
+      for (var i = 0; i < featuresInAdvertisement.length; i++) {
+        if (featuresInAdvertisement[i] === askedFeatures[i]) {
+          askedFeaturesAdvertisements.push(advertisementsArray[j]);
         }
       }
     }
-    askedFeaturesAdvertisements.push(advertisementsArray[j]);
     return askedFeaturesAdvertisements;
   }
 
-  // эта функция запускается при событии change (наверху). Она должна принимать в качестве первого аргумента
-  // результат работы функции findCheckedFeaturesOnFilterForm() - отмеченные фичи, а в качестве второго аргумента
-  // отфильтрованный другими фильтрами массив из объявлений.
-  // сначала создается пустой массив, куда будут складываться подходящие объявления
-  // потом первый цикл берет каждое объявление из переданных вторым аргументом и складывает его фичи в массив featuresInAdvertisement
-  // потом второй цикл ищет среди этих фич (находящихся в объявлении) те фичи, которые были отмечены на инпутах.
-  // Как только одну не находит - выходит из второго цикла и начинает проверять фичи другого объявления.
 })();

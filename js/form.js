@@ -15,10 +15,19 @@
   var priceValue = 1000;
 
   noticeRooms.addEventListener('change', changeCapacityFromRooms);
+  addEventForInputs();
 
-  for (var i = 0; i < inputs.length; i++) {
-    if (!inputs[i].validity.valid) {
-      inputs[i].style.border = '1px solid red';
+  function addEventForInputs() {
+    for (var i = 0; i < inputs.length; i++) {
+      inputs[i].addEventListener('input', checkValidity);
+    }
+  }
+
+  function checkValidity(evt) {
+    if (!evt.target.validity.valid) {
+      evt.target.style.border = '2px solid red';
+    } else if (evt.target.validity.valid) {
+      evt.target.style.border = '1px solid #d9d9d3';
     }
   }
 
