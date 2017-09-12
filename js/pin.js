@@ -35,21 +35,31 @@
   var rooms = filtersForm.querySelector('#housing_room-number');
   var guests = filtersForm.querySelector('#housing_guests-number');
 
-  filtersForm.addEventListener('change', chooseFilter);
+  filtersForm.addEventListener('change', function () {
+    window.debounce(chooseFilter);
+  });
 
 
   function chooseFilter(dataArr) {
     removePins();
     dataArr = window.newAdvertisementsArr;
+    var askedAdvertisements = [];
     var askedTypeAdvertisements = typeFilter(dataArr);
     var askedPriceAdvertisements = priceFilter(askedTypeAdvertisements);
     var askedRoomsAdvertisements = roomsFilter(askedPriceAdvertisements);
     var askedGuestsAdvertisements = guestsFilter(askedRoomsAdvertisements);
-    var askedFeaturesAdvertisements = filterFeatures(findCheckedFeaturesOnFilterForm(), askedGuestsAdvertisements);
+    // console.log(askedGuestsAdvertisements);
+    var askedFeatures = findCheckedFeaturesOnFilterForm();
 
-    window.createPinList(askedFeaturesAdvertisements);
-    window.showAdvertisement(askedFeaturesAdvertisements[0]);
-    window.askedAdvertisements = askedFeaturesAdvertisements;
+    if (askedFeatures.length === 0) {
+      askedAdvertisements = askedGuestsAdvertisements;
+    } else {
+      askedAdvertisements = filterFeatures(askedFeatures, askedGuestsAdvertisements);
+    }
+    window.debounce(askedAdvertisements);
+    window.createPinList(askedAdvertisements);
+    window.showAdvertisement(askedAdvertisements[0]);
+    window.askedAdvertisements = askedAdvertisements;
   }
 
   function typeFilter(dataArr) {
@@ -153,18 +163,17 @@
     return checkedFeaturesOnFilterForm;
   }
 
-
   function filterFeatures(askedFeatures, advertisementsArray) {
     var askedFeaturesAdvertisements = [];
     for (var j = 0; j < advertisementsArray.length; j++) {
       var featuresInAdvertisement = advertisementsArray[j].offer.features;
-      for (var i = 0; i < featuresInAdvertisement.length; i++) {
-        if (featuresInAdvertisement[i] === askedFeatures[i]) {
-          askedFeaturesAdvertisements.push(advertisementsArray[j]);
+      for (var i = 0; i < askedFeatures.length; i++) {
+        if (featuresInAdvertisement.indexOf(askedFeatures[i]) === -1) {
+          break;
         }
+        askedFeaturesAdvertisements.push(advertisementsArray[j]);
       }
     }
     return askedFeaturesAdvertisements;
   }
-
 })();
