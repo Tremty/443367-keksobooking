@@ -10,6 +10,19 @@
   var formFieldAddress = document.querySelector('#address');
   var pinMainWidth = 74 / 2;
   var pinMainHeight = 94;
+  var pinMainStartCoords = {
+    y: 300,
+    x: 637
+  };
+
+  var possibleCoords = {
+    minY: 220,
+    maxY: 657,
+    minX: 37,
+    maxX: 1155
+  };
+
+  formFieldAddress.value = 'y: ' + (pinMainStartCoords.y + pinMainHeight) + ' x: ' + (pinMainStartCoords.x + pinMainWidth);
 
   window.openHandler = function (evt) {
 
@@ -87,14 +100,30 @@
       pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
       pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
       formFieldAddress.value = 'y: ' + ((pinMain.offsetTop - shift.y) + pinMainHeight) + ' x: ' + (pinMainWidth + (pinMain.offsetLeft - shift.x));
+
+      if (pinMain.offsetTop < possibleCoords.minY - pinMainHeight) {
+        pinMain.style.top = '115px';
+      }
+
+      if (pinMain.offsetTop > possibleCoords.maxY - pinMainHeight) {
+        pinMain.style.top = '560px';
+      }
+
+      if (pinMain.offsetLeft < pinMainWidth - possibleCoords.minX) {
+        pinMain.style.left = '2px';
+      }
+
+      if (pinMain.offsetLeft > possibleCoords.maxX - pinMainWidth) {
+        pinMain.style.left = '1125px';
+      }
     };
 
-    var onMouseUp = function (upEvt) {
+    function onMouseUp(upEvt) {
       upEvt.preventDefault();
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
-    };
+    }
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);

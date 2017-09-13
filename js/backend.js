@@ -45,7 +45,6 @@
   };
 
   var form = document.querySelector('.notice__form');
-  // var submitBtn = document.querySelector('.form__submit');
 
   function errorHandler(errorMessage) {
     var errorMessageModal = document.createElement('div');

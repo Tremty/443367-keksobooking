@@ -9,6 +9,8 @@
     var pinWidth = 56;
     for (var i = 0; i < dataArr.length; i++) {
       var pinElement = document.createElement('div');
+      var fullPinList = document.querySelector('.pin');
+      var pinAvatar = document.createElement('img');
       pinElement.className = 'pin';
       pinElement.tabIndex = 0;
       pinElement.setAttribute('data-number', i);
@@ -16,8 +18,6 @@
       pinElement.addEventListener('keydown', window.openHandler);
       pinElement.style.left = dataArr[i].location.x - pinWidth / 2 + 'px';
       pinElement.style.top = dataArr[i].location.y - pinHeight + 'px';
-      var fullPinList = document.querySelector('.pin');
-      var pinAvatar = document.createElement('img');
       pinAvatar.src = dataArr[i].author.avatar;
       pinAvatar.className = 'rounded';
       pinAvatar.width = '40';
@@ -39,7 +39,6 @@
     window.debounce(chooseFilter);
   });
 
-
   function chooseFilter(dataArr) {
     removePins();
     dataArr = window.newAdvertisementsArr;
@@ -48,7 +47,6 @@
     var askedPriceAdvertisements = priceFilter(askedTypeAdvertisements);
     var askedRoomsAdvertisements = roomsFilter(askedPriceAdvertisements);
     var askedGuestsAdvertisements = guestsFilter(askedRoomsAdvertisements);
-    // console.log(askedGuestsAdvertisements);
     var askedFeatures = findCheckedFeaturesOnFilterForm();
 
     if (askedFeatures.length === 0) {
@@ -149,7 +147,6 @@
       pinList.removeChild(pinElements[i]);
     }
   }
-
 
   function findCheckedFeaturesOnFilterForm() {
     var featuresCheckboxes = filtersForm.querySelectorAll('input');
