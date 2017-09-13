@@ -144,11 +144,14 @@
     var askedFeaturesAdvertisements = [];
     for (var j = 0; j < advertisementsArray.length; j++) {
       var featuresInAdvertisement = advertisementsArray[j].offer.features;
+      var count = 0;
       for (var i = 0; i < askedFeatures.length; i++) {
-        if (featuresInAdvertisement.indexOf(askedFeatures[i]) === -1) {
-          break;
+        if (featuresInAdvertisement.indexOf(askedFeatures[i]) !== -1) {
+          count++;
         }
-        askedFeaturesAdvertisements.push(advertisementsArray[j]);
+        if (count === askedFeatures.length) {
+          askedFeaturesAdvertisements.push(advertisementsArray[j]);
+        }
       }
     }
     return askedFeaturesAdvertisements;
