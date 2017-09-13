@@ -31,41 +31,42 @@
     }
   }
 
-  function changeCapacityFromRooms(event) {
-    if (event.target.value === '100') {
-      // 100
-      noticeCapacity.value = 0;
-      noticeCapacity.children[2].classList.add('hidden');
-      noticeCapacity.children[1].classList.add('hidden');
-      noticeCapacity.children[0].classList.add('hidden');
-      noticeCapacity.children[3].classList.remove('hidden');
-    } else if (event.target.value === '1') {
-      // 1
-      noticeCapacity.value = 1;
-      noticeCapacity.children[3].classList.add('hidden');
-      noticeCapacity.children[1].classList.add('hidden');
-      noticeCapacity.children[0].classList.add('hidden');
-      noticeCapacity.children[2].classList.remove('hidden');
-    } else if (event.target.value === '2') {
-      // 2
-      noticeCapacity.value = 1;
-      noticeCapacity.children[3].classList.add('hidden');
-      noticeCapacity.children[0].classList.add('hidden');
-      noticeCapacity.children[2].classList.remove('hidden');
-      noticeCapacity.children[1].classList.remove('hidden');
-    } else if (event.target.value === '3') {
-      // 3
-      noticeCapacity.value = 1;
-      noticeCapacity.children[3].classList.add('hidden');
-      noticeCapacity.children[2].classList.remove('hidden');
-      noticeCapacity.children[1].classList.remove('hidden');
-      noticeCapacity.children[0].classList.remove('hidden');
+  function changeCapacityFromRooms(evt) {
+    switch (evt.target.value) {
+      case '100':
+        noticeCapacity.value = 0;
+        noticeCapacity.children[2].classList.add('hidden');
+        noticeCapacity.children[1].classList.add('hidden');
+        noticeCapacity.children[0].classList.add('hidden');
+        noticeCapacity.children[3].classList.remove('hidden');
+        break;
+      case '1':
+        noticeCapacity.value = 1;
+        noticeCapacity.children[3].classList.add('hidden');
+        noticeCapacity.children[1].classList.add('hidden');
+        noticeCapacity.children[0].classList.add('hidden');
+        noticeCapacity.children[2].classList.remove('hidden');
+        break;
+      case '2':
+        noticeCapacity.value = 1;
+        noticeCapacity.children[3].classList.add('hidden');
+        noticeCapacity.children[0].classList.add('hidden');
+        noticeCapacity.children[2].classList.remove('hidden');
+        noticeCapacity.children[1].classList.remove('hidden');
+        break;
+      case '3':
+        noticeCapacity.value = 1;
+        noticeCapacity.children[3].classList.add('hidden');
+        noticeCapacity.children[2].classList.remove('hidden');
+        noticeCapacity.children[1].classList.remove('hidden');
+        noticeCapacity.children[0].classList.remove('hidden');
+        break;
     }
   }
 
   window.reset = function () {
-    for (var j = 0; j < inputs.length; j++) {
-      inputs[j].value = '';
+    for (var i = 0; i < inputs.length; i++) {
+      inputs[i].value = '';
     }
     textarea.value = '';
     noticeTimeIn.value = noticeTimeIn.options[0].value;
@@ -75,8 +76,8 @@
     noticeType.value = noticeType.options[0].value;
     noticePrice.value = priceValue;
 
-    for (j = 0; j < formFeatures.length; j++) {
-      formFeatures[j].checked = false;
+    for (i = 0; i < formFeatures.length; i++) {
+      formFeatures[i].checked = false;
     }
   };
 })();

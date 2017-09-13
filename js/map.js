@@ -10,6 +10,7 @@
   var formFieldAddress = document.querySelector('#address');
   var pinMainWidth = 74 / 2;
   var pinMainHeight = 94;
+
   var pinMainStartCoords = {
     y: 300,
     x: 637
@@ -32,7 +33,11 @@
       pinActive.classList.add('pin--active');
       if (pinActive.classList[1] !== 'pin__main') {
         var index = pinActive.dataset.number;
-        window.showAdvertisement(window.newAdvertisementsArr[index]);
+        if (window.askedAdvertisements) {
+          window.showAdvertisement(window.askedAdvertisements[index]);
+        } else {
+          window.showAdvertisement(window.newAdvertisementsArr[index]);
+        }
         showModal();
       } else {
         window.showAdvertisement(window.advertisementMain);

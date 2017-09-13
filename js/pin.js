@@ -54,29 +54,21 @@
     } else {
       askedAdvertisements = filterFeatures(askedFeatures, askedGuestsAdvertisements);
     }
-    window.debounce(askedAdvertisements);
     window.createPinList(askedAdvertisements);
     window.showAdvertisement(askedAdvertisements[0]);
     window.askedAdvertisements = askedAdvertisements;
   }
 
   function typeFilter(dataArr) {
-    dataArr = window.newAdvertisementsArr;
     var askedTypeAdvertisements;
-    if (type.options[1].selected === true) {
-      askedTypeAdvertisements = dataArr.filter(function (it) {
-        return it.offer.type === type.options[1].value;
-      });
-    } else if (type.options[2].selected === true) {
-      askedTypeAdvertisements = dataArr.filter(function (it) {
-        return it.offer.type === type.options[2].value;
-      });
-    } else if (type.options[3].selected === true) {
-      askedTypeAdvertisements = dataArr.filter(function (it) {
-        return it.offer.type === type.options[3].value;
-      });
-    } else {
-      askedTypeAdvertisements = dataArr;
+    for (var i = 0; i < type.options.length; i++) {
+      if (type.options[i].selected === true) {
+        askedTypeAdvertisements = dataArr.filter(function (it) {
+          return it.offer.type === type.options[i].value;
+        });
+      } else if (type.options[0].selected === true) {
+        askedTypeAdvertisements = dataArr;
+      }
     }
     return askedTypeAdvertisements;
   }
@@ -103,39 +95,28 @@
 
   function roomsFilter(dataArr) {
     var askedRoomsAdvertisements;
-
-    if (rooms.options[1].selected === true) {
-      askedRoomsAdvertisements = dataArr.filter(function (it) {
-        return it.offer.rooms === (+rooms.options[1].value);
-
-      });
-    } else if (rooms.options[2].selected === true) {
-      askedRoomsAdvertisements = dataArr.filter(function (it) {
-        return it.offer.rooms === (+rooms.options[2].value);
-      });
-    } else if (rooms.options[3].selected === true) {
-      askedRoomsAdvertisements = dataArr.filter(function (it) {
-        return it.offer.rooms === (+rooms.options[3].value);
-      });
-    } else {
-      askedRoomsAdvertisements = dataArr;
+    for (var i = 0; i < rooms.options.length; i++) {
+      if (rooms.options[i].selected === true) {
+        askedRoomsAdvertisements = dataArr.filter(function (it) {
+          return it.offer.rooms === (+rooms.options[i].value);
+        });
+      } else if (rooms.options[0].selected === true) {
+        askedRoomsAdvertisements = dataArr;
+      }
     }
     return askedRoomsAdvertisements;
   }
 
   function guestsFilter(dataArr) {
     var askedGuestsAdvertisements;
-
-    if (guests.options[1].selected === true) {
-      askedGuestsAdvertisements = dataArr.filter(function (it) {
-        return it.offer.guests === (+guests.options[1].value);
-      });
-    } else if (guests.options[2].selected === true) {
-      askedGuestsAdvertisements = dataArr.filter(function (it) {
-        return it.offer.guests === (+guests.options[2].value);
-      });
-    } else {
-      askedGuestsAdvertisements = dataArr;
+    for (var i = 0; i < guests.options.length; i++) {
+      if (guests.options[i].selected === true) {
+        askedGuestsAdvertisements = dataArr.filter(function (it) {
+          return it.offer.guests === (+guests.options[i].value);
+        });
+      } else if (guests.options[0].selected === true) {
+        askedGuestsAdvertisements = dataArr;
+      }
     }
     return askedGuestsAdvertisements;
   }
@@ -150,7 +131,6 @@
 
   function findCheckedFeaturesOnFilterForm() {
     var featuresCheckboxes = filtersForm.querySelectorAll('input');
-
     var checkedFeaturesOnFilterForm = [];
     for (var i = 0; i < featuresCheckboxes.length; i++) {
       if (featuresCheckboxes[i].checked === true) {
