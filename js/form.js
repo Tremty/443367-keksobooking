@@ -67,8 +67,8 @@
       inputs[i].value = '';
     }
 
-    for (i = 0; i < formFeatures.length; i++) {
-      formFeatures[i].checked = false;
+    for (var j = 0; j < formFeatures.length; j++) {
+      formFeatures[j].checked = false;
     }
 
     textarea.value = '';
