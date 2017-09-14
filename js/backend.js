@@ -2,13 +2,15 @@
 
 (function () {
   var SERVER_URL = 'https://1510.dump.academy/keksobooking';
+  var SUCCESS_STATUS = 200;
+  var form = document.querySelector('.notice__form');
 
   function setup(onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === SUCCESS_STATUS) {
         onLoad(xhr.response);
       } else {
         onError(xhr.response);
@@ -43,8 +45,6 @@
       xhr.send();
     }
   };
-
-  var form = document.querySelector('.notice__form');
 
   function errorHandler(errorMessage) {
     var errorMessageModal = document.createElement('div');

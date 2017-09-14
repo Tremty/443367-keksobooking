@@ -12,23 +12,19 @@
   var textarea = notice.querySelector('textarea');
   var featuresBlock = notice.querySelector('#features');
   var formFeatures = featuresBlock.querySelectorAll('input');
-  var priceValue = 1000;
 
   noticeRooms.addEventListener('change', changeCapacityFromRooms);
-  addEventForInputs();
+  addCheckValidityForInputs();
 
-  function addEventForInputs() {
+  function addCheckValidityForInputs() {
     for (var i = 0; i < inputs.length; i++) {
       inputs[i].addEventListener('input', checkValidity);
     }
   }
 
   function checkValidity(evt) {
-    if (!evt.target.validity.valid) {
-      evt.target.style.border = '2px solid red';
-    } else if (evt.target.validity.valid) {
-      evt.target.style.border = '1px solid #d9d9d3';
-    }
+    var target = evt.target;
+    target.style.border = target.validity.valid ? '1px solid #d9d9d3' : '2px solid red';
   }
 
   function changeCapacityFromRooms(evt) {
@@ -65,9 +61,16 @@
   }
 
   window.reset = function () {
+    var priceValue = 1000;
+
     for (var i = 0; i < inputs.length; i++) {
       inputs[i].value = '';
     }
+
+    for (i = 0; i < formFeatures.length; i++) {
+      formFeatures[i].checked = false;
+    }
+
     textarea.value = '';
     noticeTimeIn.value = noticeTimeIn.options[0].value;
     noticeTimeOut.value = noticeTimeOut.options[0].value;
@@ -75,9 +78,5 @@
     noticeCapacity.value = noticeCapacity.options[2].value;
     noticeType.value = noticeType.options[0].value;
     noticePrice.value = priceValue;
-
-    for (i = 0; i < formFeatures.length; i++) {
-      formFeatures[i].checked = false;
-    }
   };
 })();

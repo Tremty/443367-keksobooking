@@ -1,12 +1,19 @@
 'use strict';
 
 (function () {
+  var LOW_PRICE = 10000;
+  var HIGH_PRICE = 50000;
+  var filtersForm = document.querySelector('.tokyo__filters');
+  var type = filtersForm.querySelector('#housing_type');
+  var price = filtersForm.querySelector('#housing_price');
+  var rooms = filtersForm.querySelector('#housing_room-number');
+  var guests = filtersForm.querySelector('#housing_guests-number');
 
   window.createPinList = function (dataArr) {
-    var pinList = document.querySelector('.tokyo__pin-map');
-    var fragment = document.createDocumentFragment();
     var pinHeight = 75;
     var pinWidth = 56;
+    var pinList = document.querySelector('.tokyo__pin-map');
+    var fragment = document.createDocumentFragment();
     for (var i = 0; i < dataArr.length; i++) {
       var pinElement = document.createElement('div');
       var fullPinList = document.querySelector('.pin');
@@ -29,18 +36,11 @@
     fullPinList.appendChild(fragment);
   };
 
-  var filtersForm = document.querySelector('.tokyo__filters');
-  var type = filtersForm.querySelector('#housing_type');
-  var price = filtersForm.querySelector('#housing_price');
-  var rooms = filtersForm.querySelector('#housing_room-number');
-  var guests = filtersForm.querySelector('#housing_guests-number');
-
   filtersForm.addEventListener('change', function () {
     window.debounce(chooseFilter);
   });
 
   function chooseFilter(dataArr) {
-    removePins();
     dataArr = window.newAdvertisementsArr;
     var askedAdvertisements = [];
     var askedTypeAdvertisements = typeFilter(dataArr);
@@ -48,12 +48,8 @@
     var askedRoomsAdvertisements = roomsFilter(askedPriceAdvertisements);
     var askedGuestsAdvertisements = guestsFilter(askedRoomsAdvertisements);
     var askedFeatures = findCheckedFeaturesOnFilterForm();
-
-    if (askedFeatures.length === 0) {
-      askedAdvertisements = askedGuestsAdvertisements;
-    } else {
-      askedAdvertisements = filterFeatures(askedFeatures, askedGuestsAdvertisements);
-    }
+    removePins();
+    askedAdvertisements = askedFeatures.length === 0 ? askedGuestsAdvertisements : filterFeatures(askedFeatures, askedGuestsAdvertisements);
     window.createPinList(askedAdvertisements);
     window.showAdvertisement(askedAdvertisements[0]);
     window.askedAdvertisements = askedAdvertisements;
@@ -77,15 +73,15 @@
     var askedPriceAdvertisements;
     if (price.options[1].selected === true) {
       askedPriceAdvertisements = dataArr.filter(function (it) {
-        return it.offer.price >= 10000 && it.offer.price <= 50000;
+        return it.offer.price >= LOW_PRICE && it.offer.price <= HIGH_PRICE;
       });
     } else if (price.options[2].selected === true) {
       askedPriceAdvertisements = dataArr.filter(function (it) {
-        return it.offer.price < 10000;
+        return it.offer.price < LOW_PRICE;
       });
     } else if (price.options[3].selected === true) {
       askedPriceAdvertisements = dataArr.filter(function (it) {
-        return it.offer.price > 50000;
+        return it.offer.price > HIGH_PRICE;
       });
     } else {
       askedPriceAdvertisements = dataArr;

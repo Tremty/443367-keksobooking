@@ -4,12 +4,13 @@
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
 
+  var PIN_MAIN_HALF_WIDTH = 74 / 2;
+  var PIN_MAIN_HEIGHT = 94;
+
   var modalDialog = document.querySelector('.dialog');
   var dialogClose = modalDialog.querySelector('.dialog__close');
   var pinMain = document.getElementsByClassName('pin__main')[0];
   var formFieldAddress = document.querySelector('#address');
-  var pinMainWidth = 74 / 2;
-  var pinMainHeight = 94;
 
   var pinMainStartCoords = {
     y: 300,
@@ -23,10 +24,9 @@
     maxX: 1155
   };
 
-  formFieldAddress.value = 'y: ' + (pinMainStartCoords.y + pinMainHeight) + ' x: ' + (pinMainStartCoords.x + pinMainWidth);
+  formFieldAddress.value = 'y: ' + (pinMainStartCoords.y + PIN_MAIN_HEIGHT) + ' x: ' + (pinMainStartCoords.x + PIN_MAIN_HALF_WIDTH);
 
   window.openHandler = function (evt) {
-
     removePinActiveFromArr();
     if (evt.button === 0 || evt.keyCode === ENTER_KEYCODE) {
       var pinActive = evt.currentTarget;
@@ -38,9 +38,6 @@
         } else {
           window.showAdvertisement(window.newAdvertisementsArr[index]);
         }
-        showModal();
-      } else {
-        window.showAdvertisement(window.advertisementMain);
         showModal();
       }
     }
@@ -83,7 +80,6 @@
   });
 
   pinMain.addEventListener('mousedown', function (evt) {
-
     var startCoords = {
       x: evt.clientX,
       y: evt.clientY
@@ -104,21 +100,21 @@
 
       pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
       pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
-      formFieldAddress.value = 'y: ' + ((pinMain.offsetTop - shift.y) + pinMainHeight) + ' x: ' + (pinMainWidth + (pinMain.offsetLeft - shift.x));
+      formFieldAddress.value = 'y: ' + ((pinMain.offsetTop - shift.y) + PIN_MAIN_HEIGHT) + ' x: ' + (PIN_MAIN_HALF_WIDTH + (pinMain.offsetLeft - shift.x));
 
-      if (pinMain.offsetTop < possibleCoords.minY - pinMainHeight) {
+      if (pinMain.offsetTop < possibleCoords.minY - PIN_MAIN_HEIGHT) {
         pinMain.style.top = '115px';
       }
 
-      if (pinMain.offsetTop > possibleCoords.maxY - pinMainHeight) {
+      if (pinMain.offsetTop > possibleCoords.maxY - PIN_MAIN_HEIGHT) {
         pinMain.style.top = '560px';
       }
 
-      if (pinMain.offsetLeft < pinMainWidth - possibleCoords.minX) {
+      if (pinMain.offsetLeft < PIN_MAIN_HALF_WIDTH - possibleCoords.minX) {
         pinMain.style.left = '2px';
       }
 
-      if (pinMain.offsetLeft > possibleCoords.maxX - pinMainWidth) {
+      if (pinMain.offsetLeft > possibleCoords.maxX - PIN_MAIN_HALF_WIDTH) {
         pinMain.style.left = '1125px';
       }
     };
