@@ -4,12 +4,14 @@
   var notice = document.querySelector('.notice');
   var noticeTimeIn = notice.querySelector('#timein');
   var noticeTimeOut = notice.querySelector('#timeout');
-  var noticeTimeInValues = ['12:00', '13:00', '14:00'];
-  var noticeTimeOutValues = ['12:00', '13:00', '14:00'];
   var noticeType = notice.querySelector('#type');
   var noticePrice = notice.querySelector('#price');
-  var minPrices = [0, 1000, 5000, 10000];
-  var types = ['bungalo', 'flat', 'house', 'palace'];
+  var noticeData = {
+    noticeTimeInValues: ['12:00', '13:00', '14:00'],
+    noticeTimeOutValues: ['12:00', '13:00', '14:00'],
+    minPrices: [0, 1000, 5000, 10000],
+    types: ['bungalo', 'flat', 'house', 'palace']
+  };
 
   noticeTimeIn.addEventListener('change', synchronizeFieldsTimeIn);
   noticeTimeOut.addEventListener('change', synchronizeFieldsTimeOut);
@@ -42,18 +44,18 @@
   }
 
   function synchronizeFieldsTimeIn(evt) {
-    synchronizeFields(evt, searchValueForTimeEvt, noticeTimeInValues, noticeTimeOutValues, noticeTimeOut);
+    synchronizeFields(evt, searchValueForTimeEvt, noticeData.noticeTimeInValues, noticeData.noticeTimeOutValues, noticeTimeOut);
   }
 
   function synchronizeFieldsTimeOut(evt) {
-    synchronizeFields(evt, searchValueForTimeEvt, noticeTimeOutValues, noticeTimeInValues, noticeTimeIn);
+    synchronizeFields(evt, searchValueForTimeEvt, noticeData.noticeTimeOutValues, noticeData.noticeTimeInValues, noticeTimeIn);
   }
 
   function synchronizeFieldsSetMinPrice(evt) {
-    synchronizeFields(evt, setValueForMinPriceEvt, types, minPrices, noticePrice);
+    synchronizeFields(evt, setValueForMinPriceEvt, noticeData.types, noticeData.minPrices, noticePrice);
   }
 
   function synchronizeFieldsMinPrice(evt) {
-    synchronizeFields(evt, searchValueForMinPriceEvt, types, minPrices, noticePrice);
+    synchronizeFields(evt, searchValueForMinPriceEvt, noticeData.types, noticeData.minPrices, noticePrice);
   }
 })();
