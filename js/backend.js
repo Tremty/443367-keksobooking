@@ -30,21 +30,19 @@
     return xhr;
   }
 
-  window.backend = {
-    save: function (data, onLoad, onError) {
-      var xhr = setup(onLoad, onError);
+  function saveDataInForm(data, onLoad, onError) {
+    var xhr = setup(onLoad, onError);
 
-      xhr.open('POST', SERVER_URL);
-      xhr.send(data);
-    },
+    xhr.open('POST', SERVER_URL);
+    xhr.send(data);
+  }
 
-    load: function (onLoad, onError) {
-      var xhr = setup(onLoad, onError);
+  function loadAdvertisements(onLoad, onError) {
+    var xhr = setup(onLoad, onError);
 
-      xhr.open('GET', SERVER_URL + '/data');
-      xhr.send();
-    }
-  };
+    xhr.open('GET', SERVER_URL + '/data');
+    xhr.send();
+  }
 
   function errorHandler(errorMessage) {
     var errorMessageModal = document.createElement('div');
@@ -62,16 +60,18 @@
 
   function successHandler(loadedAdvertisements) {
     window.newAdvertisementsArr = loadedAdvertisements;
-    window.createPinList(loadedAdvertisements);
-    window.showAdvertisement(loadedAdvertisements[0]);
+    window.createPinList(loadedAdvertisements, 3);
   }
 
-  window.backend.load(successHandler, errorHandler);
+  loadAdvertisements(successHandler, errorHandler);
 
   form.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(form), function () {
-      window.reset();
+    saveDataInForm(new FormData(form), function () {
+      window.resetDataInForm();
     }, errorHandler);
     evt.preventDefault();
   });
+
+  window.saveDataInForm = saveDataInForm;
+  window.loadAdvertisements = loadAdvertisements;
 })();

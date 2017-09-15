@@ -13,9 +13,6 @@
   var featuresBlock = notice.querySelector('#features');
   var formFeatures = featuresBlock.querySelectorAll('input');
 
-  noticeRooms.addEventListener('change', changeCapacityFromRooms);
-  addCheckValidityForInputs();
-
   function addCheckValidityForInputs() {
     for (var i = 0; i < inputs.length; i++) {
       inputs[i].addEventListener('input', checkValidity);
@@ -60,7 +57,7 @@
     }
   }
 
-  window.reset = function () {
+  function resetDataInForm() {
     var priceValue = 1000;
 
     for (var i = 0; i < inputs.length; i++) {
@@ -70,6 +67,7 @@
     for (var j = 0; j < formFeatures.length; j++) {
       formFeatures[j].checked = false;
     }
+    window.setValueForPinMain();
 
     textarea.value = '';
     noticeTimeIn.value = noticeTimeIn.options[0].value;
@@ -78,5 +76,12 @@
     noticeCapacity.value = noticeCapacity.options[2].value;
     noticeType.value = noticeType.options[0].value;
     noticePrice.value = priceValue;
-  };
+    noticePrice.setAttribute('min', priceValue);
+  }
+
+  noticeRooms.addEventListener('change', changeCapacityFromRooms);
+
+  addCheckValidityForInputs();
+
+  window.resetDataInForm = resetDataInForm;
 })();

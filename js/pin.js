@@ -3,42 +3,45 @@
 (function () {
   var LOW_PRICE = 10000;
   var HIGH_PRICE = 50000;
+  var PIN_HEIGHT = 75;
+  var PIN_WIDTH = 56;
+  var PIN_AVATAR_SIZE = '40';
+
+  var tokyoMap = document.querySelector('.tokyo__pin-map');
   var filtersForm = document.querySelector('.tokyo__filters');
   var type = filtersForm.querySelector('#housing_type');
   var price = filtersForm.querySelector('#housing_price');
   var rooms = filtersForm.querySelector('#housing_room-number');
   var guests = filtersForm.querySelector('#housing_guests-number');
 
-  window.createPinList = function (dataArr) {
-    var pinHeight = 75;
-    var pinWidth = 56;
-    var pinList = document.querySelector('.tokyo__pin-map');
+  function createPinList(dataArr, count) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < dataArr.length; i++) {
+    if (!count) {
+      count = dataArr.length;
+    }
+    for (var i = 0; i < count; i++) {
       var pinElement = document.createElement('div');
       var fullPinList = document.querySelector('.pin');
       var pinAvatar = document.createElement('img');
-      pinElement.className = 'pin';
+
+      window.addClickHandlerForPin(pinElement);
+      window.addButtonHandlerForPin(pinElement);
+      pinElement.classList.add('pin');
       pinElement.tabIndex = 0;
       pinElement.setAttribute('data-number', i);
-      pinElement.addEventListener('click', window.openHandler);
-      pinElement.addEventListener('keydown', window.openHandler);
-      pinElement.style.left = dataArr[i].location.x - pinWidth / 2 + 'px';
-      pinElement.style.top = dataArr[i].location.y - pinHeight + 'px';
+      pinElement.style.left = dataArr[i].location.x - PIN_WIDTH / 2 + 'px';
+      pinElement.style.top = dataArr[i].location.y - PIN_HEIGHT + 'px';
+
       pinAvatar.src = dataArr[i].author.avatar;
-      pinAvatar.className = 'rounded';
-      pinAvatar.width = '40';
-      pinAvatar.height = '40';
+      pinAvatar.classList.add('rounded');
+      pinAvatar.width = PIN_AVATAR_SIZE;
+      pinAvatar.height = PIN_AVATAR_SIZE;
       pinElement.appendChild(pinAvatar);
       fragment.appendChild(pinElement);
     }
-    pinList.appendChild(fragment);
+    tokyoMap.appendChild(fragment);
     fullPinList.appendChild(fragment);
-  };
-
-  filtersForm.addEventListener('change', function () {
-    window.debounce(chooseFilter);
-  });
+  }
 
   function chooseFilter(dataArr) {
     dataArr = window.newAdvertisementsArr;
@@ -51,18 +54,18 @@
     removePins();
     askedAdvertisements = askedFeatures.length === 0 ? askedGuestsAdvertisements : filterFeatures(askedFeatures, askedGuestsAdvertisements);
     window.createPinList(askedAdvertisements);
-    window.showAdvertisement(askedAdvertisements[0]);
+    window.closeModal();
     window.askedAdvertisements = askedAdvertisements;
   }
 
   function typeFilter(dataArr) {
     var askedTypeAdvertisements;
     for (var i = 0; i < type.options.length; i++) {
-      if (type.options[i].selected === true) {
-        askedTypeAdvertisements = dataArr.filter(function (it) {
-          return it.offer.type === type.options[i].value;
+      if (type.options[i].selected) {
+        askedTypeAdvertisements = dataArr.filter(function (item) {
+          return item.offer.type === type.options[i].value;
         });
-      } else if (type.options[0].selected === true) {
+      } else if (type.options[0].selected) {
         askedTypeAdvertisements = dataArr;
       }
     }
@@ -71,17 +74,17 @@
 
   function priceFilter(dataArr) {
     var askedPriceAdvertisements;
-    if (price.options[1].selected === true) {
-      askedPriceAdvertisements = dataArr.filter(function (it) {
-        return it.offer.price >= LOW_PRICE && it.offer.price <= HIGH_PRICE;
+    if (price.options[1].selected) {
+      askedPriceAdvertisements = dataArr.filter(function (item) {
+        return item.offer.price >= LOW_PRICE && item.offer.price <= HIGH_PRICE;
       });
-    } else if (price.options[2].selected === true) {
-      askedPriceAdvertisements = dataArr.filter(function (it) {
-        return it.offer.price < LOW_PRICE;
+    } else if (price.options[2].selected) {
+      askedPriceAdvertisements = dataArr.filter(function (item) {
+        return item.offer.price < LOW_PRICE;
       });
-    } else if (price.options[3].selected === true) {
-      askedPriceAdvertisements = dataArr.filter(function (it) {
-        return it.offer.price > HIGH_PRICE;
+    } else if (price.options[3].selected) {
+      askedPriceAdvertisements = dataArr.filter(function (item) {
+        return item.offer.price > HIGH_PRICE;
       });
     } else {
       askedPriceAdvertisements = dataArr;
@@ -92,11 +95,11 @@
   function roomsFilter(dataArr) {
     var askedRoomsAdvertisements;
     for (var i = 0; i < rooms.options.length; i++) {
-      if (rooms.options[i].selected === true) {
-        askedRoomsAdvertisements = dataArr.filter(function (it) {
-          return it.offer.rooms === (+rooms.options[i].value);
+      if (rooms.options[i].selected) {
+        askedRoomsAdvertisements = dataArr.filter(function (item) {
+          return item.offer.rooms === (+rooms.options[i].value);
         });
-      } else if (rooms.options[0].selected === true) {
+      } else if (rooms.options[0].selected) {
         askedRoomsAdvertisements = dataArr;
       }
     }
@@ -106,11 +109,11 @@
   function guestsFilter(dataArr) {
     var askedGuestsAdvertisements;
     for (var i = 0; i < guests.options.length; i++) {
-      if (guests.options[i].selected === true) {
-        askedGuestsAdvertisements = dataArr.filter(function (it) {
-          return it.offer.guests === (+guests.options[i].value);
+      if (guests.options[i].selected) {
+        askedGuestsAdvertisements = dataArr.filter(function (item) {
+          return item.offer.guests === (+guests.options[i].value);
         });
-      } else if (guests.options[0].selected === true) {
+      } else if (guests.options[0].selected) {
         askedGuestsAdvertisements = dataArr;
       }
     }
@@ -118,10 +121,9 @@
   }
 
   function removePins() {
-    var pinList = document.querySelector('.tokyo__pin-map');
-    var pinElements = document.querySelectorAll('.pin');
+    var pinElements = tokyoMap.querySelectorAll('.pin');
     for (var i = pinElements.length - 1; i > 0; i--) {
-      pinList.removeChild(pinElements[i]);
+      tokyoMap.removeChild(pinElements[i]);
     }
   }
 
@@ -129,7 +131,7 @@
     var featuresCheckboxes = filtersForm.querySelectorAll('input');
     var checkedFeaturesOnFilterForm = [];
     for (var i = 0; i < featuresCheckboxes.length; i++) {
-      if (featuresCheckboxes[i].checked === true) {
+      if (featuresCheckboxes[i].checked) {
         checkedFeaturesOnFilterForm.push(featuresCheckboxes[i].value);
       }
     }
@@ -152,4 +154,10 @@
     }
     return askedFeaturesAdvertisements;
   }
+
+  filtersForm.addEventListener('change', function () {
+    window.debounce(chooseFilter);
+  });
+
+  window.createPinList = createPinList;
 })();

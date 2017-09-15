@@ -1,17 +1,18 @@
 'use strict';
 
 (function () {
-  var notice = document.querySelector('.notice');
-  var noticeTimeIn = notice.querySelector('#timein');
-  var noticeTimeOut = notice.querySelector('#timeout');
-  var noticeType = notice.querySelector('#type');
-  var noticePrice = notice.querySelector('#price');
-  var noticeData = {
+  var NOTICE_DATA = {
     noticeTimeInValues: ['12:00', '13:00', '14:00'],
     noticeTimeOutValues: ['12:00', '13:00', '14:00'],
     minPrices: [0, 1000, 5000, 10000],
     types: ['bungalo', 'flat', 'house', 'palace']
   };
+
+  var notice = document.querySelector('.notice');
+  var noticeTimeIn = notice.querySelector('#timein');
+  var noticeTimeOut = notice.querySelector('#timeout');
+  var noticeType = notice.querySelector('#type');
+  var noticePrice = notice.querySelector('#price');
 
   noticeTimeIn.addEventListener('change', synchronizeFieldsTimeIn);
   noticeTimeOut.addEventListener('change', synchronizeFieldsTimeOut);
@@ -44,18 +45,18 @@
   }
 
   function synchronizeFieldsTimeIn(evt) {
-    synchronizeFields(evt, searchValueForTimeEvt, noticeData.noticeTimeInValues, noticeData.noticeTimeOutValues, noticeTimeOut);
+    synchronizeFields(evt, searchValueForTimeEvt, NOTICE_DATA.noticeTimeInValues, NOTICE_DATA.noticeTimeOutValues, noticeTimeOut);
   }
 
   function synchronizeFieldsTimeOut(evt) {
-    synchronizeFields(evt, searchValueForTimeEvt, noticeData.noticeTimeOutValues, noticeData.noticeTimeInValues, noticeTimeIn);
+    synchronizeFields(evt, searchValueForTimeEvt, NOTICE_DATA.noticeTimeOutValues, NOTICE_DATA.noticeTimeInValues, noticeTimeIn);
   }
 
   function synchronizeFieldsSetMinPrice(evt) {
-    synchronizeFields(evt, setValueForMinPriceEvt, noticeData.types, noticeData.minPrices, noticePrice);
+    synchronizeFields(evt, setValueForMinPriceEvt, NOTICE_DATA.types, NOTICE_DATA.minPrices, noticePrice);
   }
 
   function synchronizeFieldsMinPrice(evt) {
-    synchronizeFields(evt, searchValueForMinPriceEvt, noticeData.types, noticeData.minPrices, noticePrice);
+    synchronizeFields(evt, searchValueForMinPriceEvt, NOTICE_DATA.types, NOTICE_DATA.minPrices, noticePrice);
   }
 })();
