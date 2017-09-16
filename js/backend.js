@@ -3,6 +3,7 @@
 (function () {
   var SERVER_URL = 'https://1510.dump.academy/keksobooking';
   var SUCCESS_STATUS = 200;
+  var TIMEOUT = 10000;
   var form = document.querySelector('.notice__form');
 
   function setup(onLoad, onError) {
@@ -25,7 +26,7 @@
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = 10000;
+    xhr.timeout = TIMEOUT;
 
     return xhr;
   }
