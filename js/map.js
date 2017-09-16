@@ -66,7 +66,7 @@
 
   function modalEscHandler(evt) {
     if (evt.keyCode === ESC_KEYCODE) {
-      window.closeModal();
+      closeModal();
       removePinActiveFromArr();
     }
   }
@@ -89,34 +89,34 @@
   }
 
   function addClickHandlerForPin(element) {
-    element.addEventListener('click', window.openHandler);
+    element.addEventListener('click', openHandler);
   }
 
   function addButtonHandlerForPin(element) {
-    element.addEventListener('keydown', window.openHandler);
+    element.addEventListener('keydown', openHandler);
   }
 
   dialogClose.addEventListener('click', function () {
-    window.closeModal();
+    closeModal();
     removePinActiveFromArr();
   });
 
   dialogClose.addEventListener('keydown', function (evt) {
     if (evt.keyCode === ENTER_KEYCODE) {
-      window.closeModal();
+      closeModal();
       removePinActiveFromArr();
     }
   });
 
   pinMain.addEventListener('mousedown', function (evt) {
-    window.closeModal();
+    closeModal();
 
     var startCoords = {
       x: evt.clientX,
       y: evt.clientY
     };
 
-    function onMouseMove(moveEvt) {
+    function mouseMoveHandler(moveEvt) {
       moveEvt.preventDefault();
 
       var shift = {
@@ -135,15 +135,15 @@
       controlPinMainPosition();
     }
 
-    function onMouseUp(upEvt) {
+    function mouseUpHandler(upEvt) {
       upEvt.preventDefault();
 
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
+      document.removeEventListener('mousemove', mouseMoveHandler);
+      document.removeEventListener('mouseup', mouseUpHandler);
     }
 
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
+    document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', mouseUpHandler);
   });
 
   dialogClose.addEventListener('click', function (evt) {
@@ -152,9 +152,11 @@
 
   setValueForPinMain();
 
-  window.setValueForPinMain = setValueForPinMain;
-  window.openHandler = openHandler;
-  window.closeModal = closeModal;
-  window.addClickHandlerForPin = addClickHandlerForPin;
-  window.addButtonHandlerForPin = addButtonHandlerForPin;
+  window.map = {
+    setValueForPinMain: setValueForPinMain,
+    openHandler: openHandler,
+    closeModal: closeModal,
+    addClickHandlerForPin: addClickHandlerForPin,
+    addButtonHandlerForPin: addButtonHandlerForPin
+  };
 })();

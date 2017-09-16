@@ -20,30 +20,30 @@
       count = dataArr.length;
     }
     for (var i = 0; i < count; i++) {
-      var pinElement = document.createElement('div');
+      var pin = document.createElement('div');
       var fullPinList = document.querySelector('.pin');
       var pinAvatar = document.createElement('img');
 
-      window.addClickHandlerForPin(pinElement);
-      window.addButtonHandlerForPin(pinElement);
-      pinElement.classList.add('pin');
-      pinElement.tabIndex = 0;
-      pinElement.setAttribute('data-number', i);
-      pinElement.style.left = dataArr[i].location.x - PIN_WIDTH / 2 + 'px';
-      pinElement.style.top = dataArr[i].location.y - PIN_HEIGHT + 'px';
+      window.map.addClickHandlerForPin(pin);
+      window.map.addButtonHandlerForPin(pin);
+      pin.classList.add('pin');
+      pin.tabIndex = 0;
+      pin.dataset.number = i;
+      pin.style.left = dataArr[i].location.x - PIN_WIDTH / 2 + 'px';
+      pin.style.top = dataArr[i].location.y - PIN_HEIGHT + 'px';
 
       pinAvatar.src = dataArr[i].author.avatar;
       pinAvatar.classList.add('rounded');
       pinAvatar.width = PIN_AVATAR_SIZE;
       pinAvatar.height = PIN_AVATAR_SIZE;
-      pinElement.appendChild(pinAvatar);
-      fragment.appendChild(pinElement);
+      pin.appendChild(pinAvatar);
+      fragment.appendChild(pin);
     }
     tokyoMap.appendChild(fragment);
     fullPinList.appendChild(fragment);
   }
 
-  function chooseFilter(dataArr) {
+  function formFilterHandler(dataArr) {
     dataArr = window.newAdvertisementsArr;
     var askedAdvertisements = [];
     var askedTypeAdvertisements = typeFilter(dataArr);
@@ -54,7 +54,7 @@
     removePins();
     askedAdvertisements = askedFeatures.length === 0 ? askedGuestsAdvertisements : filterFeatures(askedFeatures, askedGuestsAdvertisements);
     window.createPinList(askedAdvertisements);
-    window.closeModal();
+    window.map.closeModal();
     window.askedAdvertisements = askedAdvertisements;
   }
 
@@ -156,7 +156,7 @@
   }
 
   filtersForm.addEventListener('change', function () {
-    window.debounce(chooseFilter);
+    window.debounce(formFilterHandler);
   });
 
   window.createPinList = createPinList;

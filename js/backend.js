@@ -72,6 +72,8 @@
     evt.preventDefault();
   });
 
-  window.saveDataInForm = saveDataInForm;
-  window.loadAdvertisements = loadAdvertisements;
+  window.backend = {
+    saveDataInForm: saveDataInForm,
+    loadAdvertisements: loadAdvertisements
+  };
 })();
