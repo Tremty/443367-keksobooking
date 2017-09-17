@@ -60,14 +60,14 @@
   function resetDataInForm() {
     var priceValue = 1000;
 
-    for (var i = 0; i < inputs.length; i++) {
-      inputs[i].value = '';
-    }
+    inputs.forEach(function (item) {
+      item.value = '';
+    });
+    formFeatures.forEach(function (item) {
+      item.checked = false;
+    });
 
-    for (var j = 0; j < formFeatures.length; j++) {
-      formFeatures[j].checked = false;
-    }
-    window.map.setValueForPinMain();
+    window.setValueForPinMain();
 
     textarea.value = '';
     noticeTimeIn.value = noticeTimeIn.options[0].value;

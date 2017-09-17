@@ -60,7 +60,7 @@
 
   function typeFilter(dataArr) {
     var askedTypeAdvertisements;
-    for (var i = 0; i < type.options.length; i++) {
+    for (var i = 1; i < type.options.length; i++) {
       if (type.options[i].selected) {
         askedTypeAdvertisements = dataArr.filter(function (item) {
           return item.offer.type === type.options[i].value;

@@ -38,22 +38,22 @@
     lodge.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + selectedArray.offer.guests + ' гостей в ' + selectedArray.offer.rooms + ' комнатах';
     lodge.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + selectedArray.offer.checkin + ' , выезд до ' + selectedArray.offer.checkout;
     lodge.querySelector('.lodge__description').textContent = selectedArray.offer.description;
-    for (var i = 0; i < features.length; i++) {
+    features.forEach(function (item) {
       var oneFeatureImage = document.createElement('span');
-      var oneFeature = 'feature__image--' + features[i];
+      var oneFeature = 'feature__image--' + item;
       oneFeatureImage.classList.add('feature__image');
       oneFeatureImage.classList.add(oneFeature);
       featureFragment.appendChild(oneFeatureImage);
-    }
+    });
     lodge.querySelector('.lodge__features').appendChild(featureFragment);
-    for (var j = 0; j < photos.length; j++) {
+    photos.forEach(function (item) {
       var onePhoto = document.createElement('img');
-      onePhoto.src = photos[j];
+      onePhoto.src = item;
       onePhoto.alt = 'Lodge photo';
       onePhoto.width = LODGE_PHOTO_SIZE.width;
       onePhoto.height = LODGE_PHOTO_SIZE.height;
       photosFragment.appendChild(onePhoto);
-    }
+    });
     lodge.querySelector('.lodge__photos').appendChild(photosFragment);
 
     return lodge;
