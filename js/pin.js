@@ -45,31 +45,46 @@
 
   function formFilterHandler(dataArr) {
     dataArr = window.newAdvertisementsArr;
-    var askedAdvertisements = [];
-    var askedTypeAdvertisements = typeFilter(dataArr);
+    var askedTypeAdvertisements = typeFilter(dataArr, type);
     var askedPriceAdvertisements = priceFilter(askedTypeAdvertisements);
-    var askedRoomsAdvertisements = roomsFilter(askedPriceAdvertisements);
-    var askedGuestsAdvertisements = guestsFilter(askedRoomsAdvertisements);
+    var askedRoomsAdvertisements = roomsFilter(askedPriceAdvertisements, rooms);
+    var askedGuestsAdvertisements = guestsFilter(askedRoomsAdvertisements, guests);
     var askedFeatures = findCheckedFeaturesOnFilterForm();
     removePins();
-    askedAdvertisements = askedFeatures.length === 0 ? askedGuestsAdvertisements : filterFeatures(askedFeatures, askedGuestsAdvertisements);
+    var askedAdvertisements = askedFeatures.length === 0 ? askedGuestsAdvertisements : filterFeatures(askedFeatures, askedGuestsAdvertisements);
     window.createPinList(askedAdvertisements);
     window.map.closeModal();
     window.askedAdvertisements = askedAdvertisements;
   }
 
-  function typeFilter(dataArr) {
-    var askedTypeAdvertisements;
-    for (var i = 1; i < type.options.length; i++) {
-      if (type.options[i].selected) {
-        askedTypeAdvertisements = dataArr.filter(function (item) {
-          return item.offer.type === type.options[i].value;
-        });
-      } else if (type.options[0].selected) {
-        askedTypeAdvertisements = dataArr;
-      }
+  function typeFilter(dataArr, filterValue) {
+    var filteredAdvertisements = dataArr;
+    if (!filterValue.options[0].selected) {
+      filteredAdvertisements = dataArr.filter(function (item) {
+        return filterValue.value === item.offer.type;
+      });
     }
-    return askedTypeAdvertisements;
+    return filteredAdvertisements;
+  }
+
+  function roomsFilter(dataArr, filterValue) {
+    var askedRoomsAdvertisements = dataArr;
+    if (!filterValue.options[0].selected) {
+      askedRoomsAdvertisements = dataArr.filter(function (item) {
+        return item.offer.rooms === (+filterValue.value);
+      });
+    }
+    return askedRoomsAdvertisements;
+  }
+
+  function guestsFilter(dataArr, filterValue) {
+    var askedGuestsAdvertisements = dataArr;
+    if (!filterValue.options[0].selected) {
+      askedGuestsAdvertisements = dataArr.filter(function (item) {
+        return item.offer.guests === (+filterValue.value);
+      });
+    }
+    return askedGuestsAdvertisements;
   }
 
   function priceFilter(dataArr) {
@@ -90,34 +105,6 @@
       askedPriceAdvertisements = dataArr;
     }
     return askedPriceAdvertisements;
-  }
-
-  function roomsFilter(dataArr) {
-    var askedRoomsAdvertisements;
-    for (var i = 0; i < rooms.options.length; i++) {
-      if (rooms.options[i].selected) {
-        askedRoomsAdvertisements = dataArr.filter(function (item) {
-          return item.offer.rooms === (+rooms.options[i].value);
-        });
-      } else if (rooms.options[0].selected) {
-        askedRoomsAdvertisements = dataArr;
-      }
-    }
-    return askedRoomsAdvertisements;
-  }
-
-  function guestsFilter(dataArr) {
-    var askedGuestsAdvertisements;
-    for (var i = 0; i < guests.options.length; i++) {
-      if (guests.options[i].selected) {
-        askedGuestsAdvertisements = dataArr.filter(function (item) {
-          return item.offer.guests === (+guests.options[i].value);
-        });
-      } else if (guests.options[0].selected) {
-        askedGuestsAdvertisements = dataArr;
-      }
-    }
-    return askedGuestsAdvertisements;
   }
 
   function removePins() {

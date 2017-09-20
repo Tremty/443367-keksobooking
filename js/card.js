@@ -9,19 +9,7 @@
   };
 
   function translateType(englishValue) {
-    var translatedTypeInRussian;
-    switch (englishValue) {
-      case TYPES_IN_ENGLISH[0] :
-        translatedTypeInRussian = TYPES_IN_RUSSIAN[0];
-        break;
-      case TYPES_IN_ENGLISH[1] :
-        translatedTypeInRussian = TYPES_IN_RUSSIAN[1];
-        break;
-      case TYPES_IN_ENGLISH[2] :
-        translatedTypeInRussian = TYPES_IN_RUSSIAN[2];
-        break;
-    }
-    return translatedTypeInRussian;
+    return TYPES_IN_RUSSIAN[TYPES_IN_ENGLISH.indexOf(englishValue)];
   }
 
   function createAdvertisement(selectedArray) {

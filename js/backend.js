@@ -11,10 +11,12 @@
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === SUCCESS_STATUS) {
-        onLoad(xhr.response);
-      } else {
-        onError(xhr.response);
+      switch (xhr.status) {
+        case SUCCESS_STATUS:
+          onLoad(xhr.response);
+          break;
+        default:
+          onError(xhr.response);
       }
     });
 
@@ -40,7 +42,6 @@
 
   function loadAdvertisements(onLoad, onError) {
     var xhr = setup(onLoad, onError);
-
     xhr.open('GET', SERVER_URL + '/data');
     xhr.send();
   }

@@ -8,22 +8,22 @@
   var modalDialog = document.querySelector('.dialog');
   var dialogClose = modalDialog.querySelector('.dialog__close');
 
-
   function openHandler(evt) {
     removePinActiveFromArr();
     if (evt.button === 0 || evt.keyCode === ENTER_KEYCODE) {
       var pinActive = evt.currentTarget;
       pinActive.classList.add('pin--active');
       if (!pinActive.classList.contains('pin__main')) {
-        var index = pinActive.dataset.number;
-        if (window.askedAdvertisements) {
-          window.showAdvertisement(window.askedAdvertisements[index]);
-        } else {
-          window.showAdvertisement(window.newAdvertisementsArr[index]);
-        }
-        showModal();
+        selectAskedCart(pinActive, window.askedAdvertisements);
       }
     }
+  }
+
+  function selectAskedCart(pinActive, advertisements) {
+    var index = pinActive.dataset.number;
+    advertisements = window.askedAdvertisements ? window.askedAdvertisements : window.newAdvertisementsArr;
+    window.showAdvertisement(advertisements[index]);
+    showModal();
   }
 
   function modalEscHandler(evt) {
@@ -76,6 +76,7 @@
   });
 
   window.map = {
+    selectAskedCart: selectAskedCart,
     openHandler: openHandler,
     closeModal: closeModal,
     addClickHandlerForPin: addClickHandlerForPin,

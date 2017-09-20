@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var MIN_LENGTH = 30;
   var notice = document.querySelector('.notice');
   var noticeTimeIn = notice.querySelector('#timein');
   var noticeTimeOut = notice.querySelector('#timeout');
@@ -8,6 +9,7 @@
   var noticePrice = notice.querySelector('#price');
   var noticeRooms = notice.querySelector('#room_number');
   var noticeCapacity = notice.querySelector('#capacity');
+  var noticeTitle = notice.querySelector('#title');
   var inputs = notice.querySelectorAll('input');
   var textarea = notice.querySelector('textarea');
   var featuresBlock = notice.querySelector('#features');
@@ -57,15 +59,25 @@
     }
   }
 
+  noticeTitle.addEventListener('input', function (evt) {
+    var target = evt.target;
+    if (target.value.length < MIN_LENGTH) {
+      target.setCustomValidity('Имя должно состоять минимум из 30-ти символов');
+    } else {
+      target.setCustomValidity('');
+    }
+  });
+
   function resetDataInForm() {
     var priceValue = 1000;
 
-    inputs.forEach(function (item) {
-      item.value = '';
-    });
-    formFeatures.forEach(function (item) {
-      item.checked = false;
-    });
+    for (var i = 0; i < inputs.length; i++) {
+      inputs[i].value = '';
+    }
+
+    for (var j = 0; j < formFeatures.length; j++) {
+      formFeatures[j].checked = false;
+    }
 
     window.setValueForPinMain();
 
